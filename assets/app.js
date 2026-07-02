@@ -38,11 +38,11 @@
 
 // ---- scroll reveal ("glide") ----
 (function(){
-  var SEL='.sec-head,.svc,.cap,.pkg,.who,.step,.quote,.darkcard,.mock,.wf,.platform,.deep,.phone-stage,.portrait,.vid,.trust-grid .lg,.cap-head,.social-hero .body,.feat,.chk-list li,.center-cta .wrap';
+  var SEL='.sec-head,.svc,.cap,.pkg,.who,.step,.quote,.darkcard,.mock,.wf,.platform,.deep,.phone-stage,.portrait,.vid,.trust-grid .lg,.cap-head,.social-hero .body,.feat,.chk-list li,.center-cta .wrap,.uc,.alc,.monitor,.ai-demo,.lab-card,.terminal,.demo-copy';
   var els=[].slice.call(document.querySelectorAll(SEL));
   if(!els.length) return;
   // stagger children within grids/lists
-  ['.svc-grid','.cap-grid','.pkg-grid','.trust-grid','.showcase-grid','.feat-list','.chk-list'].forEach(function(gs){
+  ['.svc-grid','.cap-grid','.pkg-grid','.trust-grid','.showcase-grid','.feat-list','.chk-list','.uc-grid','.alc-grid'].forEach(function(gs){
     [].forEach.call(document.querySelectorAll(gs),function(g){
       [].forEach.call(g.children,function(ch,i){ ch.style.transitionDelay=((i%6)*70)+'ms'; });
     });
@@ -101,4 +101,77 @@
       show('err','Something went wrong — please try again, or email hello@lemniscatemarketingsystems.com.');
     }
   });
+})();
+
+// ---- A La Carte plan builder (interactive) ----
+(function(){
+  var grid=document.getElementById('alcGrid'); if(!grid) return;
+  var count=document.getElementById('alcCount');
+  function update(){
+    var n=grid.querySelectorAll('.alc.added').length;
+    if(count) count.innerHTML='<b>'+n+'</b> workflow'+(n===1?'':'s')+' selected';
+  }
+  grid.addEventListener('click',function(e){
+    var card=e.target.closest('.alc'); if(!card) return;
+    card.classList.toggle('added'); update();
+  });
+  update();
+})();
+
+// ---- AI Smart Lab (interactive simulation) ----
+(function(){
+  var wrap=document.getElementById('smartLab'); if(!wrap) return;
+  var mods=wrap.querySelectorAll('.lab-mod'),
+      ta=wrap.querySelector('#labInput'),
+      desc=wrap.querySelector('#labDesc'),
+      run=wrap.querySelector('#labRun'),
+      reset=wrap.querySelector('#labReset'),
+      term=wrap.querySelector('#labTerm');
+  var MODULES={
+    'lead-triage':{
+      desc:'Automatically qualify and route inbound leads based on intent.',
+      sample:"Hi, I'm looking for a listing agent for my condo in Uptown. Budget is around $650k. Can we talk this week?",
+      steps:['> booting NOVA lead-triage…','> parsing message intent…','  intent = SELLER_INQUIRY (0.94)','  budget = $650,000  ·  area = Uptown','> scoring lead…  HOT ✓','> routing → Luxury Team (round-robin)','> drafting SMS reply + booking link…','✓ Lead qualified, assigned & follow-up queued in 1.2s']
+    },
+    'visual-architect':{
+      desc:'Turn a listing into on-brand visuals and a short video.',
+      sample:'New listing: 3bd/2ba modern loft, downtown, $780k. Make me a launch post + reel.',
+      steps:['> booting NOVA visual-architect…','> reading listing details…','  3bd/2ba · loft · $780,000','> generating hero image (brand palette)…','> writing caption + hashtags…','> rendering 15s reel from photos…','✓ Launch post + reel ready for approval']
+    },
+    'content-architect':{
+      desc:'Draft a full content suite from one prompt.',
+      sample:'Write me a week of content about buying vs. renting in this market.',
+      steps:['> booting NOVA content-architect…','> researching market data…','> outlining 5-post series…','  blog + 5 captions + 1 video script','> generating avatar voiceover…','✓ A week of content drafted & scheduled']
+    }
+  };
+  var current='lead-triage', timer=null;
+  function load(key){
+    current=key; var m=MODULES[key];
+    mods.forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-mod')===key); });
+    if(desc) desc.textContent=m.desc;
+    if(ta){ ta.value=''; ta.placeholder=m.sample; }
+    resetTerm();
+  }
+  function resetTerm(){
+    if(timer){ clearInterval(timer); timer=null; }
+    term.innerHTML='<span class="muted">> Awaiting workflow initialization…</span><span class="cur"></span>';
+  }
+  function simulate(){
+    if(timer) clearInterval(timer);
+    var steps=MODULES[current].steps.slice();
+    var input=(ta && (ta.value.trim()||ta.placeholder))||'';
+    var lines=['$ nova run '+current+' --input "'+input.slice(0,54)+(input.length>54?'…':'')+'"',''].concat(steps);
+    term.innerHTML=''; var i=0;
+    timer=setInterval(function(){
+      if(i>=lines.length){ clearInterval(timer); timer=null; term.innerHTML+='<span class="cur"></span>'; return; }
+      var ln=lines[i++];
+      var cls = /^\$|^>|^\s{2}/.test(ln) ? '' : (/^✓/.test(ln)?'':'muted');
+      term.innerHTML += (ln?('<span class="'+cls+'">'+ln.replace(/</g,'&lt;')+'</span>'):'')+'\n';
+      term.scrollTop=term.scrollHeight;
+    },260);
+  }
+  mods.forEach(function(x){ x.addEventListener('click',function(){ load(x.getAttribute('data-mod')); }); });
+  if(run) run.addEventListener('click',simulate);
+  if(reset) reset.addEventListener('click',resetTerm);
+  load('lead-triage');
 })();
