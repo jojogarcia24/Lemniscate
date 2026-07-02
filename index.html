@@ -11,206 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#ffffff; --bg-2:#f6f6f9; --panel:#ffffff; --dark:#0e0e12;
-    --ink:#0e0e14; --ink-2:#54545d; --ink-3:#9a9aa6;
-    --line:rgba(14,14,20,.10); --line-2:rgba(14,14,20,.16);
-    --accent:#635bff;
-    --shadow:0 1px 2px rgba(14,14,20,.04),0 18px 44px -22px rgba(14,14,20,.22);
-    --shadow-lg:0 30px 70px -30px rgba(14,14,20,.32);
-    --ease:cubic-bezier(.16,1,.3,1);
-    --wrap:1200px;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth;overflow-x:clip}
-  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
-  a{color:inherit;text-decoration:none}
-  h1,h2,h3,h4{font-family:'Sora',sans-serif;font-weight:700;letter-spacing:-.02em;line-height:1.05}
-  .serif{font-family:'Playfair Display',serif;font-style:italic;font-weight:500;letter-spacing:0}
-  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
-  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:'Sora',sans-serif;font-weight:600;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:'Sora',sans-serif;font-weight:600;font-size:14px;padding:15px 28px;border-radius:100px;cursor:pointer;border:1px solid transparent;transition:.25s var(--ease);white-space:nowrap}
-  .btn svg{width:18px;height:18px}
-  .btn-primary{background:var(--dark);color:#fff}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
-  .btn-ghost{background:#fff;border-color:var(--line-2);color:var(--ink)}
-  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
-  .btn-light{background:#fff;color:var(--dark)}
-  .btn-light:hover{transform:translateY(-2px);box-shadow:0 20px 50px -20px rgba(0,0,0,.5)}
-  section{position:relative}
-  .sec-pad{padding:100px 0}
-  .sec-head{max-width:720px;margin:0 auto 56px;text-align:center}
-  .sec-head h2{font-size:clamp(30px,4.8vw,52px);margin:16px 0 14px}
-  .sec-head p{color:var(--ink-2);font-size:clamp(15px,2vw,18px)}
-
-  /* ---------- nav ---------- */
-  header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.82);border-bottom:1px solid var(--line)}
-  @supports((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-    @media(min-width:981px){header{background:rgba(255,255,255,.68);backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%)}}
-  }
-  nav{display:flex;align-items:center;justify-content:space-between;gap:18px;height:76px}
-  .logo{display:flex;align-items:center;gap:11px;font-family:'Sora',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.01em}
-  .logo .mark{width:36px;height:36px;display:grid;place-items:center;font-size:21px;border-radius:11px;background:var(--dark);color:#fff}
-  .nav-links{display:flex;align-items:center;gap:28px}
-  .nav-links a{font-size:14.5px;color:var(--ink-2);font-weight:500;transition:.2s}
-  .nav-links a:hover{color:var(--ink)}
-  .nav-links .btn-primary{display:none}
-  .nav-cta{display:flex;align-items:center;gap:14px}
-  .burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
-  .burger span{width:24px;height:2px;background:var(--ink);border-radius:2px;transition:.3s}
-
-  /* ---------- pastel washes ---------- */
-  .wash{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-  .wash .blob{position:absolute;border-radius:50%;filter:blur(90px)}
-  .wash .b1{width:620px;height:620px;background:#bcd7ff;top:-180px;left:8%;opacity:.55}
-  .wash .b2{width:560px;height:560px;background:#ffcfe6;top:-120px;right:4%;opacity:.5}
-  .wash .b3{width:520px;height:520px;background:#d3f7ea;top:180px;left:40%;opacity:.4}
-  .wash .b4{width:480px;height:480px;background:#e7d9ff;top:60px;left:-8%;opacity:.45}
-
-  /* ---------- hero ---------- */
-  .hero{position:relative;overflow:hidden;padding:96px 0 104px;text-align:center}
-  .hero .wrap{position:relative;z-index:1}
-  .hero .word{font-family:'Sora',sans-serif;font-weight:800;letter-spacing:-.04em;line-height:.92;font-size:clamp(64px,13.5vw,190px)}
-  .hero .word .tail{font-family:'Playfair Display',serif;font-style:italic;font-weight:500;letter-spacing:-.01em}
-  .hero p.lead{max-width:640px;margin:26px auto 40px;font-size:clamp(18px,2.4vw,24px);color:var(--ink-2);line-height:1.4}
-  .hero p.lead .serif{color:var(--ink)}
-  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-  .hero-strategy{margin-top:34px;font-family:'Sora',sans-serif;font-weight:600;font-size:15px;color:var(--ink-2);display:inline-flex;align-items:center;gap:8px;transition:.2s}
-  .hero-strategy:hover{color:var(--ink)}
-  .hero-strategy .ar{transition:.25s var(--ease)}
-  .hero-strategy:hover .ar{transform:translateX(4px)}
-
-  /* ---------- service cards ---------- */
-  .svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
-  .svc{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:34px 30px;transition:.28s var(--ease);box-shadow:0 1px 2px rgba(14,14,20,.03)}
-  .svc:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--line-2)}
-  .svc .ic{width:44px;height:44px;color:var(--ink);margin-bottom:56px}
-  .svc .ic svg{width:44px;height:44px;stroke-width:1.5}
-  .svc h3{font-size:22px;margin-bottom:12px}
-  .svc p{color:var(--ink-2);font-size:15px;line-height:1.55}
-
-  /* ---------- split feature ---------- */
-  .split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
-  .split .copy h2{font-size:clamp(38px,6vw,72px);margin:18px 0 22px;line-height:1}
-  .split .copy>p{color:var(--ink-2);font-size:17px;max-width:44ch;margin-bottom:34px}
-  .feat-list{display:grid;gap:24px}
-  .feat{display:flex;gap:16px}
-  .feat .fi{flex:0 0 46px;width:46px;height:46px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;color:var(--ink)}
-  .feat .fi svg{width:20px;height:20px;stroke-width:1.6}
-  .feat h4{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;margin-bottom:5px}
-  .feat p{color:var(--ink-2);font-size:15px;line-height:1.5}
-
-  /* ---------- dark stat card ---------- */
-  .darkcard{background:var(--dark);border-radius:30px;padding:40px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
-  .darkcard .klab{display:flex;align-items:center;gap:12px;font-family:'Sora',sans-serif;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:26px}
-  .darkcard .kbox{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.08);display:grid;place-items:center;color:#fff}
-  .darkcard .kbox svg{width:20px;height:20px;stroke-width:1.6}
-  .darkcard .big{font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(64px,9vw,104px);line-height:.9;letter-spacing:-.03em}
-  .darkcard .sub{color:rgba(255,255,255,.72);font-size:18px;max-width:30ch;margin:18px 0 30px}
-  .darkcard .divider{height:1px;background:rgba(255,255,255,.12);margin:0 0 26px}
-  .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .thumb{aspect-ratio:3/4;border-radius:16px;background:linear-gradient(150deg,#a9c7ff,#e3c8ff 55%,#ffc9e0);display:grid;place-items:center}
-  .thumb .play{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--dark);box-shadow:0 8px 24px rgba(0,0,0,.28)}
-  .thumb .play svg{width:18px;height:18px;margin-left:2px}
-  .darkcap{margin-top:22px;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4)}
-
-  /* ---------- nova live card ---------- */
-  .nova-stage{border-radius:26px;overflow:hidden;border:1px solid var(--line-2);background:#000;box-shadow:var(--shadow-lg)}
-  .nova-stage .bar{display:flex;align-items:center;gap:12px;background:#0a0a0d;padding:16px 20px;color:#fff}
-  .nova-stage .bar .bot{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.09);display:grid;place-items:center}
-  .nova-stage .bar .bot svg{width:20px;height:20px;stroke-width:1.6;color:#fff}
-  .nova-stage .bar .nm{font-family:'Sora',sans-serif;font-weight:700;font-size:15px}
-  .nova-stage .bar .st{font-size:11.5px;color:rgba(255,255,255,.55)}
-  .nova-stage .bar .dots{margin-left:auto;color:rgba(255,255,255,.4);letter-spacing:2px}
-  .nova-stage iframe{display:block;width:100%;aspect-ratio:16/10;border:0;background:#000}
-  .nova-toggle{display:flex;justify-content:center;gap:8px;margin-bottom:22px}
-  .nova-toggle .tg{display:inline-flex;align-items:center;gap:8px;font-family:'Sora',sans-serif;font-weight:600;font-size:13.5px;padding:10px 18px;border-radius:100px;border:1px solid var(--line-2);background:#fff;color:var(--ink-2)}
-  .nova-toggle .tg.on{background:var(--dark);color:#fff;border-color:var(--dark)}
-  .nova-toggle .tg svg{width:16px;height:16px;stroke-width:1.7}
-
-  /* ---------- trusted logos ---------- */
-  .trust-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:12px}
-  .lg{background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:20px;min-height:150px;display:grid;place-items:center;text-align:center;padding:20px;transition:.25s var(--ease)}
-  .lg:hover{background:#fff;box-shadow:var(--shadow);transform:translateY(-3px)}
-  .lg .nm{font-family:'Sora',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.01em;color:var(--ink);line-height:1.05}
-  .lg .sm{font-family:'Sora',sans-serif;font-weight:600;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:7px}
-  .lg.ph .nm{color:var(--ink-3);font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase}
-
-  /* ---------- final cta / contact ---------- */
-  .cta{position:relative;overflow:hidden;background:var(--dark);color:#fff}
-  .cta .wash .blob{opacity:.28;filter:blur(100px)}
-  .cta .wrap{position:relative;z-index:1}
-  .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
-  .cta h2{font-size:clamp(34px,5vw,58px);line-height:1.02;margin-bottom:18px}
-  .cta h2 .serif{font-weight:500}
-  .cta .lead{color:rgba(255,255,255,.72);font-size:17px;max-width:42ch;margin-bottom:26px}
-  .cta .pt{display:flex;gap:10px;align-items:center;color:rgba(255,255,255,.82);font-size:15px;margin-bottom:12px}
-  .cta .pt svg{width:18px;height:18px;color:#59e0a5;flex:0 0 auto}
-  .cta .ways{margin-top:26px;display:flex;flex-wrap:wrap;gap:20px;font-size:14px;color:rgba(255,255,255,.7)}
-  .cta .ways a{color:#fff;font-weight:600}
-  .form-card{background:#fff;border-radius:24px;padding:32px;color:var(--ink)}
-  .form-card h3{font-family:'Sora',sans-serif;font-size:20px;margin-bottom:6px}
-  .form-card .fh{color:var(--ink-2);font-size:14px;margin-bottom:20px}
-  form .fld{margin-bottom:12px}
-  form input,form textarea,form select{width:100%;background:#fff;border:1px solid var(--line-2);border-radius:12px;padding:14px 15px;color:var(--ink);font-family:inherit;font-size:15px}
-  form input::placeholder,form textarea::placeholder{color:var(--ink-3)}
-  form input:focus,form textarea:focus,form select:focus{outline:none;border-color:var(--accent)}
-  form textarea{min-height:78px;resize:vertical}
-  form .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .form-msg{display:none;font-size:14px;border-radius:12px;padding:12px 14px;margin-bottom:12px}
-  .form-msg.ok{display:block;background:rgba(32,178,106,.10);color:#178a52;border:1px solid rgba(32,178,106,.28)}
-  .form-msg.err{display:block;background:rgba(216,80,63,.10);color:#c0402f;border:1px solid rgba(216,80,63,.28)}
-  .form-note{font-size:12px;color:var(--ink-3);margin-top:10px;text-align:center}
-
-  /* ---------- footer ---------- */
-  footer{border-top:1px solid var(--line);background:var(--bg);padding:64px 0 36px}
-  .foot-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:34px;margin-bottom:44px}
-  .foot-brand p{color:var(--ink-2);font-size:14px;margin:16px 0;max-width:36ch}
-  .foot-col h4{font-family:'Sora',sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px}
-  .foot-col a{display:block;color:var(--ink-2);font-size:14px;padding:6px 0;transition:.2s}
-  .foot-col a:hover{color:var(--ink)}
-  .foot-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--ink-3);font-size:13px}
-  .foot-bottom .soc{display:flex;gap:14px}
-  .foot-bottom .soc a:hover{color:var(--ink)}
-
-  /* ---------- floating buttons ---------- */
-  .to-top{position:fixed;left:24px;bottom:24px;width:52px;height:52px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;z-index:90;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(12px);pointer-events:none;transition:.3s var(--ease);border:0;cursor:pointer}
-  .to-top.show{opacity:1;transform:none;pointer-events:auto}
-  .to-top svg{width:20px;height:20px}
-  .chat-fab{position:fixed;right:24px;bottom:24px;width:60px;height:60px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;z-index:90;box-shadow:var(--shadow-lg);cursor:pointer;transition:.25s var(--ease)}
-  .chat-fab:hover{transform:translateY(-3px)}
-  .chat-fab svg{width:26px;height:26px}
-
-  /* ---------- responsive ---------- */
-  @media(max-width:980px){
-    .nav-links{position:fixed;inset:0 0 0 auto;width:82%;max-width:340px;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:4px;background:#fff;border-left:1px solid var(--line);padding:96px 28px 32px;transform:translateX(105%);transition:transform .4s var(--ease);z-index:120;box-shadow:-24px 0 70px rgba(0,0,0,.12)}
-    .nav-links.open{transform:none}
-    .nav-links a{font-size:17px;padding:14px 0;width:100%;border-bottom:1px solid var(--line);color:var(--ink)}
-    .burger{display:flex;z-index:130}
-    .nav-cta .btn-primary{display:none}
-    .nav-links .btn-primary{display:inline-flex}
-    .svc-grid{grid-template-columns:1fr 1fr}
-    .svc .ic{margin-bottom:28px}
-    .split{grid-template-columns:1fr;gap:36px}
-    .split .copy{text-align:center}.split .copy>p{margin-left:auto;margin-right:auto}
-    .feat{text-align:left}
-    .cta-grid{grid-template-columns:1fr;gap:36px}
-    .trust-grid{grid-template-columns:repeat(3,1fr)}
-    .foot-grid{grid-template-columns:1fr 1fr;gap:28px}
-  }
-  @media(max-width:560px){
-    .sec-pad{padding:68px 0}
-    .hero{padding:64px 0 76px}
-    .svc-grid{grid-template-columns:1fr}
-    .trust-grid{grid-template-columns:repeat(2,1fr)}
-    .thumbs{grid-template-columns:repeat(3,1fr)}
-    .foot-grid{grid-template-columns:1fr}
-    form .row2{grid-template-columns:1fr}
-    .darkcard,.form-card{padding:26px}
-    .to-top{left:16px;bottom:16px}.chat-fab{right:16px;bottom:16px}
-  }
-</style>
+<link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
 
@@ -222,7 +23,7 @@
     <a href="#home" class="logo"><span class="mark">∞</span> Lemniscate</a>
     <div class="nav-links" id="navLinks">
       <a href="#home">Home</a>
-      <a href="#social">Social</a>
+      <a href="social.html">Social</a>
       <a href="#crm">Broker CRM</a>
       <a href="#ai">AI Integrations</a>
       <a href="#blog">Blog</a>
@@ -244,7 +45,7 @@
     <h1 class="word">Lemnis<span class="tail">cate</span></h1>
     <p class="lead">Scaling real estate teams with <span class="serif">AI storytelling</span> and high-performance marketing workflows.</p>
     <div class="hero-cta">
-      <a href="#social" class="btn btn-primary">
+      <a href="social.html" class="btn btn-primary">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
         Social Media</a>
       <a href="#crm" class="btn btn-ghost">
@@ -439,7 +240,7 @@
       <p>Scaling real estate teams with AI storytelling and high-performance marketing workflows — social, content, CRM, and AI systems in one loop.</p>
     </div>
     <div class="foot-col"><h4>Systems</h4>
-      <a href="#social">Social Media</a>
+      <a href="social.html">Social Media</a>
       <a href="#ai">AI Integrations</a>
       <a href="#crm">Broker CRM</a>
       <a href="#ai">Nova — AI Concierge</a>
@@ -466,72 +267,7 @@
 <button class="to-top" id="toTop" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <a class="chat-fab" href="#contact" aria-label="Chat with us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
 
-<script>
-  // ---- year ----
-  document.getElementById('yr').textContent = new Date().getFullYear();
-
-  // ---- mobile nav ----
-  (function(){
-    var b=document.getElementById('burger'), n=document.getElementById('navLinks');
-    b.addEventListener('click',function(){ n.classList.toggle('open'); });
-    n.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ n.classList.remove('open'); }); });
-  })();
-
-  // ---- back-to-top visibility ----
-  (function(){
-    var t=document.getElementById('toTop');
-    t.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
-    window.addEventListener('scroll',function(){ t.classList.toggle('show', window.scrollY>600); },{passive:true});
-  })();
-
-  // ---- Nova LiveAvatar: vertical on phones, horizontal on larger screens ----
-  (function(){
-    var f=document.getElementById('novaAvatar'); if(!f) return;
-    var vertical='https://embed.liveavatar.com/v1/7b891411-cd07-4eee-90da-72de1a8f58df?orientation=vertical';
-    var horizontal='https://embed.liveavatar.com/v1/1a0033df-99d4-4b61-ad7b-06bae94462d2?orientation=horizontal';
-    f.src=(window.matchMedia && window.matchMedia('(max-width:560px)').matches)?vertical:horizontal;
-  })();
-
-  // ---- Book-a-call form → marketing-inquire (records to the leads dashboard + GHL) ----
-  // Uses an absolute URL so the form still works if this page is served from its own
-  // domain (lemniscatemarketingsystems.com) as a separate site.
-  (function(){
-    var ENDPOINT = (location.hostname.indexOf('elitelivingrealty') !== -1 || location.protocol === 'file:')
-      ? '/.netlify/functions/marketing-inquire'
-      : 'https://www.elitelivingrealty.com/.netlify/functions/marketing-inquire';
-    var form=document.getElementById('demoForm'), msg=document.getElementById('formMsg'), btn=document.getElementById('fSubmit');
-    function show(kind,text){ msg.className='form-msg '+kind; msg.textContent=text; msg.scrollIntoView({behavior:'smooth',block:'center'}); }
-    form.addEventListener('submit', async function(e){
-      e.preventDefault();
-      var first=document.getElementById('fFirst').value.trim();
-      var email=document.getElementById('fEmail').value.trim();
-      var phone=document.getElementById('fPhone').value.trim();
-      if(!first || !email || !phone){ show('err','Please add your name, email, and phone so we can reach you.'); return; }
-      btn.disabled=true; btn.textContent='Sending…';
-      try{
-        var res=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            first_name:first,
-            last_name:document.getElementById('fLast').value.trim(),
-            email:email, phone:phone,
-            company:document.getElementById('fCompany').value.trim(),
-            role:document.getElementById('fRole').value,
-            package:'Lemniscate Marketing Systems',
-            intent:'book',
-            message:document.getElementById('fMsg').value.trim(),
-            page_url:location.href
-          })});
-        var j=await res.json().catch(function(){return {};});
-        if(!res.ok || j.ok===false) throw new Error((j&&j.error)||('Error '+res.status));
-        form.style.display='none';
-        show('ok','You’re booked in — we’ll reach out shortly to lock in a time. Talk soon.');
-      }catch(err){
-        btn.disabled=false; btn.textContent='Book my call';
-        show('err','Something went wrong — please try again, or email hello@lemniscatemarketingsystems.com.');
-      }
-    });
-  })();
-</script>
+<script src="assets/app.js"></script>
 
 <!-- ============================================================
      GHL CHAT WIDGET (bottom-right) — optional.
