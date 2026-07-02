@@ -1,0 +1,6 @@
+# Lemniscate Marketing Systems — standalone static site.
+# No serverless functions needed here: the Book-a-Call form posts cross-origin
+# to Elite Living Realty's /.netlify/functions/marketing-inquire (CORS is open),
+# so requests land in the shared marketing-leads dashboard + GHL.
+[build]
+  publish = "."
