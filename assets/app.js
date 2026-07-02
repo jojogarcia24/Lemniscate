@@ -26,11 +26,32 @@
   n.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ n.classList.remove('open'); }); });
 })();
 
-// ---- back-to-top visibility ----
+// ---- back-to-top + sticky-nav shadow ----
 (function(){
-  var t=document.getElementById('toTop'); if(!t) return;
-  t.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
-  window.addEventListener('scroll',function(){ t.classList.toggle('show', window.scrollY>600); },{passive:true});
+  var t=document.getElementById('toTop'), h=document.querySelector('header');
+  if(t) t.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+  window.addEventListener('scroll',function(){
+    if(t) t.classList.toggle('show', window.scrollY>600);
+    if(h) h.classList.toggle('scrolled', window.scrollY>12);
+  },{passive:true});
+})();
+
+// ---- scroll reveal ("glide") ----
+(function(){
+  var SEL='.sec-head,.svc,.cap,.pkg,.who,.step,.quote,.darkcard,.mock,.wf,.platform,.deep,.phone-stage,.portrait,.vid,.trust-grid .lg,.cap-head,.social-hero .body,.feat,.chk-list li,.center-cta .wrap';
+  var els=[].slice.call(document.querySelectorAll(SEL));
+  if(!els.length) return;
+  // stagger children within grids/lists
+  ['.svc-grid','.cap-grid','.pkg-grid','.trust-grid','.showcase-grid','.feat-list','.chk-list'].forEach(function(gs){
+    [].forEach.call(document.querySelectorAll(gs),function(g){
+      [].forEach.call(g.children,function(ch,i){ ch.style.transitionDelay=((i%6)*70)+'ms'; });
+    });
+  });
+  if(!('IntersectionObserver' in window)){ els.forEach(function(e){ e.classList.add('in'); }); return; }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  },{rootMargin:'0px 0px -8% 0px',threshold:.08});
+  els.forEach(function(e){ io.observe(e); });
 })();
 
 // ---- Nova LiveAvatar: vertical on phones, horizontal on larger screens ----

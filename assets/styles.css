@@ -417,3 +417,21 @@
     .cap-grid{grid-template-columns:1fr}
     .md-stat{gap:22px}.md-num{font-size:30px}
   }
+
+  /* ============================================================
+     SCROLL REVEAL ("glide") + interactivity
+     ============================================================ */
+  .js .sec-head,.js .svc,.js .cap,.js .pkg,.js .who,.js .step,.js .quote,
+  .js .darkcard,.js .mock,.js .wf,.js .platform,.js .deep,.js .phone-stage,
+  .js .portrait,.js .vid,.js .trust-grid .lg,.js .cap-head,.js .social-hero .body,
+  .js .feat,.js .chk-list li,.js .center-cta .wrap{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease);will-change:opacity,transform}
+  .js .in{opacity:1 !important;transform:none !important}
+  header{transition:box-shadow .3s var(--ease),background .3s var(--ease)}
+  header.scrolled{box-shadow:0 6px 26px -16px rgba(14,14,20,.28)}
+  @media(prefers-reduced-motion:reduce){
+    .js .sec-head,.js .svc,.js .cap,.js .pkg,.js .who,.js .step,.js .quote,
+    .js .darkcard,.js .mock,.js .wf,.js .platform,.js .deep,.js .phone-stage,
+    .js .portrait,.js .vid,.js .trust-grid .lg,.js .cap-head,.js .social-hero .body,
+    .js .feat,.js .chk-list li,.js .center-cta .wrap{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+  }
