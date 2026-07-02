@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lemniscate Marketing Systems — The AI Operating System for Real Estate Teams</title>
+<meta name="description" content="Automated social + content, a smart CRM, AI voice &amp; concierge, and ad automation — one platform for real estate teams. Book a demo.">
+<meta property="og:title" content="Lemniscate Marketing Systems — AI for Real Estate Teams">
+<meta property="og:description" content="One platform: automated content, a smart CRM, AI voice &amp; concierge, and ad automation. Book a demo.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-2:#f6f6f9; --panel:#ffffff; --dark:#0e0e12;
+    --ink:#0e0e14; --ink-2:#56565f; --ink-3:#9a9aa6;
+    --line:rgba(14,14,20,.10); --line-2:rgba(14,14,20,.16);
+    --accent:#635bff;
+    --shadow:0 1px 2px rgba(14,14,20,.04),0 18px 44px -22px rgba(14,14,20,.22);
+    --shadow-lg:0 30px 70px -30px rgba(14,14,20,.32);
+    --ease:cubic-bezier(.16,1,.3,1);
+    --wrap:1160px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;overflow-x:clip}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{font-family:'Sora',sans-serif;font-weight:700;letter-spacing:-.02em;line-height:1.06}
+  .serif{font-family:'Playfair Display',serif;font-style:italic;font-weight:500;letter-spacing:0}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:'Sora',sans-serif;font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+  .eyebrow::before{content:"";width:22px;height:1.5px;background:var(--accent);opacity:.7}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:'Sora',sans-serif;font-weight:600;font-size:14px;padding:14px 26px;border-radius:100px;cursor:pointer;border:1px solid transparent;transition:.25s var(--ease);white-space:nowrap}
+  .btn-primary{background:var(--dark);color:#fff}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+  .btn-ghost{background:#fff;border-color:var(--line-2);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
+  .btn-light{background:#fff;color:var(--dark)}
+  .btn-light:hover{transform:translateY(-2px);box-shadow:0 20px 50px -20px rgba(0,0,0,.5)}
+  section{position:relative}
+  .sec-pad{padding:96px 0}
+  .sec-head{max-width:700px;margin:0 auto 54px;text-align:center}
+  .sec-head h2{font-size:clamp(29px,4.6vw,48px);margin:16px 0 14px}
+  .sec-head p{color:var(--ink-2);font-size:clamp(15px,2vw,18px)}
+
+  /* ---------- top bar ---------- */
+  .topbar{background:var(--dark);color:rgba(255,255,255,.7);font-size:12.5px}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:9px;padding-bottom:9px;flex-wrap:wrap}
+  .topbar .tb-l{display:flex;gap:22px;flex-wrap:wrap}
+  .topbar a:hover{color:#fff}
+  .topbar .tb-r{display:flex;align-items:center;gap:16px}
+  .topbar .tb-cta{font-family:'Sora',sans-serif;font-weight:600;color:#fff}
+
+  /* ---------- nav ---------- */
+  header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.86);border-bottom:1px solid var(--line)}
+  @supports((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+    @media(min-width:901px){header{background:rgba(255,255,255,.72);backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%)}}
+  }
+  nav{display:flex;align-items:center;justify-content:space-between;gap:18px;height:70px}
+  .logo{display:flex;align-items:center;gap:11px;font-family:'Sora',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.01em}
+  .logo .mark{width:34px;height:34px;display:grid;place-items:center;font-size:19px;border-radius:10px;background:var(--dark);color:#fff}
+  .nav-links{display:flex;align-items:center;gap:30px}
+  .nav-links a{font-size:14px;color:var(--ink-2);font-weight:500;transition:.2s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{display:flex;align-items:center;gap:14px}
+  .burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
+  .burger span{width:24px;height:2px;background:var(--ink);border-radius:2px;transition:.3s}
+
+  /* ---------- soft pastel washes ---------- */
+  .wash{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .wash .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5}
+  .wash .b1{width:520px;height:520px;background:#c9d6ff;top:-160px;left:-120px}
+  .wash .b2{width:460px;height:460px;background:#ffd6e8;top:-90px;right:-120px;opacity:.45}
+  .wash .b3{width:420px;height:420px;background:#d3f7ea;top:120px;left:40%;opacity:.4}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;overflow:hidden;padding:92px 0 96px}
+  .hero .wrap{position:relative;z-index:1;text-align:center}
+  .hero .pill{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line-2);border-radius:100px;padding:7px 15px;font-size:13px;color:var(--ink-2);margin-bottom:26px;box-shadow:var(--shadow)}
+  .hero .pill .dot{width:7px;height:7px;border-radius:50%;background:#20b26a;box-shadow:0 0 0 4px rgba(32,178,106,.16)}
+  .hero h1{font-size:clamp(40px,6.8vw,78px);font-weight:800;margin-bottom:22px}
+  .hero h1 .serif{font-weight:500}
+  .hero p.lead{max-width:640px;margin:0 auto 34px;font-size:clamp(16px,2.2vw,20px);color:var(--ink-2)}
+  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .hero-sub{margin-top:22px;font-size:13px;color:var(--ink-3)}
+
+  /* ---------- integrations ---------- */
+  .integ{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2);padding:34px 0}
+  .integ .lab{text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:20px;font-family:'Sora',sans-serif;font-weight:600}
+  .integ .row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 14px}
+  .chip{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1px solid var(--line);border-radius:100px;font-size:13.5px;color:var(--ink-2);font-weight:500;background:#fff}
+  .chip .d{width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:.7}
+
+  /* ---------- problem/solution ---------- */
+  .ps{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:stretch}
+  .ps .card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:34px;box-shadow:var(--shadow)}
+  .ps .card.sol{background:linear-gradient(180deg,rgba(99,91,255,.05),#fff)}
+  .ps h3{font-size:22px;margin-bottom:16px}
+  .ps ul{list-style:none;display:grid;gap:12px}
+  .ps li{display:flex;gap:11px;color:var(--ink-2);font-size:15px}
+  .ps li .i{flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;margin-top:2px}
+  .ps .problem li .i{background:rgba(230,80,80,.12);color:#d8503f}
+  .ps .sol li .i{background:rgba(32,178,106,.14);color:#178a52}
+
+  /* ---------- nova ---------- */
+  .nova{background:var(--bg-2)}
+  .nova-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:44px;align-items:center}
+  .nova-copy h2{font-size:clamp(28px,4vw,42px);margin:16px 0 16px}
+  .nova-copy p{color:var(--ink-2);font-size:16px;margin-bottom:22px;max-width:46ch}
+  .badges{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;padding:7px 13px;border-radius:100px;border:1px solid var(--line-2);background:#fff;color:var(--ink-2)}
+  .badge .live{width:7px;height:7px;border-radius:50%;background:#ff4d6a;box-shadow:0 0 0 4px rgba(255,77,106,.16);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .nova-stage{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line-2);background:#000;box-shadow:var(--shadow-lg)}
+  .nova-stage iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+  .nova-cap{text-align:center;font-size:12.5px;color:var(--ink-3);margin-top:14px;letter-spacing:.02em}
+  .nova-cap b{color:var(--ink-2);font-weight:600}
+
+  /* ---------- suite ---------- */
+  .suite-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .scard{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;transition:.28s var(--ease);box-shadow:var(--shadow)}
+  .scard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--line-2)}
+  .scard .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:var(--bg-2);border:1px solid var(--line);margin-bottom:18px}
+  .scard h3{font-size:19px;margin-bottom:9px}
+  .scard .tag{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;font-family:'Sora',sans-serif}
+  .scard p{color:var(--ink-2);font-size:14.5px}
+
+  /* ---------- workflow video ---------- */
+  .flow{background:var(--bg-2)}
+  .video-wrap{max-width:960px;margin:0 auto;position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line-2);box-shadow:var(--shadow-lg);background:var(--dark)}
+  .video-wrap .ph{aspect-ratio:16/9;display:grid;place-items:center;background:radial-gradient(700px 320px at 50% 40%,rgba(99,91,255,.28),transparent),var(--dark);text-align:center;padding:24px;color:#fff}
+  .video-wrap iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+  .play{width:74px;height:74px;border-radius:50%;background:#fff;display:grid;place-items:center;margin:0 auto 16px;color:var(--dark);font-size:24px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+  .video-wrap .ph h3{font-size:20px;margin-bottom:6px}
+  .video-wrap .ph p{color:rgba(255,255,255,.7);font-size:14px}
+
+  /* ---------- steps ---------- */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px 26px;position:relative;box-shadow:var(--shadow)}
+  .step .n{font-family:'Sora',sans-serif;font-weight:800;font-size:15px;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--dark);color:#fff;margin-bottom:18px}
+  .step h3{font-size:18px;margin-bottom:8px}
+  .step p{color:var(--ink-2);font-size:14.5px}
+
+  /* ---------- who ---------- */
+  .who-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+  .who{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:var(--shadow)}
+  .who .ic{font-size:26px;margin-bottom:14px}
+  .who h3{font-size:19px;margin-bottom:9px}
+  .who p{color:var(--ink-2);font-size:14.5px}
+
+  /* ---------- pricing ---------- */
+  .price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;align-items:stretch}
+  .tier{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:32px 28px;box-shadow:var(--shadow)}
+  .tier.feat{background:var(--dark);border-color:var(--dark);color:#fff;box-shadow:var(--shadow-lg)}
+  .tier.feat .pdesc,.tier.feat .per{color:rgba(255,255,255,.62)}
+  .tier.feat li{color:rgba(255,255,255,.82)}
+  .tier .badge-top{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;font-family:'Sora',sans-serif}
+  .tier.feat .badge-top{color:#b9b4ff}
+  .tier h3{font-size:21px;margin-bottom:6px}
+  .tier .pdesc{color:var(--ink-2);font-size:14px;margin-bottom:18px;min-height:42px}
+  .tier .price{font-family:'Sora',sans-serif;font-weight:800;font-size:34px;margin-bottom:2px}
+  .tier .price small{font-size:14px;color:var(--ink-3);font-weight:500}
+  .tier .per{font-size:12.5px;color:var(--ink-3);margin-bottom:20px}
+  .tier ul{list-style:none;display:grid;gap:11px;margin-bottom:26px;flex:1}
+  .tier li{display:flex;gap:10px;font-size:14px;color:var(--ink-2)}
+  .tier li .ck{color:#20b26a;flex:0 0 auto}
+  .tier.feat li .ck{color:#59e0a5}
+  .tier .btn{width:100%}
+
+  /* ---------- testimonials ---------- */
+  .quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .quote{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow)}
+  .quote .stars{color:#f2b53a;font-size:14px;letter-spacing:2px;margin-bottom:14px}
+  .quote p{color:var(--ink);font-size:15px;margin-bottom:18px}
+  .quote .who-q{display:flex;align-items:center;gap:12px}
+  .quote .av{width:40px;height:40px;border-radius:50%;background:var(--dark);display:grid;place-items:center;color:#fff;font-weight:700;font-family:'Sora',sans-serif}
+  .quote .nm{font-size:14px;font-weight:600}
+  .quote .rl{font-size:12.5px;color:var(--ink-3)}
+
+  /* ---------- faq ---------- */
+  .faq{max-width:800px;margin:0 auto;display:grid;gap:12px}
+  .qa{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  .qa summary{list-style:none;cursor:pointer;padding:20px 24px;font-family:'Sora',sans-serif;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  .qa summary::-webkit-details-marker{display:none}
+  .qa summary .pm{flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;transition:.3s;color:var(--accent)}
+  .qa[open] summary .pm{transform:rotate(45deg)}
+  .qa .a{padding:0 24px 20px;color:var(--ink-2);font-size:15px}
+
+  /* ---------- demo / final cta ---------- */
+  .demo{background:var(--bg-2)}
+  .demo-card{max-width:900px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+  .demo-card>.wash .b1{top:-200px;left:-160px;opacity:.4}
+  .demo-card>div{position:relative;z-index:1}
+  .demo-card h2{font-size:clamp(26px,3.6vw,38px);margin-bottom:14px}
+  .demo-card p{color:var(--ink-2);font-size:15.5px;margin-bottom:20px}
+  .demo-card .pt{display:flex;gap:10px;color:var(--ink-2);font-size:14px;margin-bottom:10px}
+  .demo-card .pt .ck{color:#20b26a}
+  form .fld{margin-bottom:12px}
+  form input,form textarea,form select{width:100%;background:#fff;border:1px solid var(--line-2);border-radius:11px;padding:13px 15px;color:var(--ink);font-family:inherit;font-size:15px}
+  form input::placeholder,form textarea::placeholder{color:var(--ink-3)}
+  form input:focus,form textarea:focus,form select:focus{outline:none;border-color:var(--accent)}
+  form textarea{min-height:76px;resize:vertical}
+  form .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .form-msg{display:none;font-size:14px;border-radius:11px;padding:12px 14px;margin-bottom:12px}
+  .form-msg.ok{display:block;background:rgba(32,178,106,.10);color:#178a52;border:1px solid rgba(32,178,106,.28)}
+  .form-msg.err{display:block;background:rgba(216,80,63,.10);color:#c0402f;border:1px solid rgba(216,80,63,.28)}
+  .form-note{font-size:12px;color:var(--ink-3);margin-top:10px;text-align:center}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);background:var(--bg);padding:60px 0 34px}
+  .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:34px;margin-bottom:40px}
+  .foot-brand p{color:var(--ink-2);font-size:14px;margin:16px 0;max-width:34ch}
+  .foot-col h4{font-family:'Sora',sans-serif;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px}
+  .foot-col a{display:block;color:var(--ink-2);font-size:14px;padding:6px 0;transition:.2s}
+  .foot-col a:hover{color:var(--ink)}
+  .foot-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--ink-3);font-size:13px}
+  .foot-bottom .soc{display:flex;gap:14px}
+  .foot-bottom .soc a:hover{color:var(--ink)}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:900px){
+    .nav-links{position:fixed;inset:0 0 0 auto;width:82%;max-width:340px;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:4px;background:#fff;border-left:1px solid var(--line);padding:90px 28px 32px;transform:translateX(105%);transition:transform .4s var(--ease);z-index:120;box-shadow:-24px 0 70px rgba(0,0,0,.12)}
+    .nav-links.open{transform:none}
+    .nav-links a{font-size:17px;padding:14px 0;width:100%;border-bottom:1px solid var(--line);color:var(--ink)}
+    .burger{display:flex;z-index:130}
+    .nav-cta .btn-primary{display:none}
+    .ps{grid-template-columns:1fr}
+    .nova-grid{grid-template-columns:1fr;gap:30px}
+    .nova-copy{text-align:center}.nova-copy p{margin-left:auto;margin-right:auto}.badges{justify-content:center}
+    .demo-card{grid-template-columns:1fr;padding:32px 26px;gap:28px}
+    .foot-grid{grid-template-columns:1fr 1fr;gap:28px}
+  }
+  @media(max-width:560px){
+    .sec-pad{padding:66px 0}
+    .topbar .tb-l{display:none}
+    .topbar .wrap{justify-content:center}
+    .foot-grid{grid-template-columns:1fr}
+    .hero{padding:60px 0 70px}
+    .nova-stage{max-width:320px;margin:0 auto}
+    .nova-stage iframe{aspect-ratio:9/16}
+    form .row2{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<div class="topbar"><div class="wrap">
+  <div class="tb-l">
+    <a href="mailto:hello@lemniscatemarketingsystems.com">hello@lemniscatemarketingsystems.com</a>
+    <a href="tel:9729049632">972.904.9632</a>
+    <span>Dallas–Fort Worth, TX</span>
+  </div>
+  <div class="tb-r"><a class="tb-cta" href="#demo">Book a Demo →</a></div>
+</div></div>
+
+<!-- ===== NAV ===== -->
+<header>
+  <nav class="wrap">
+    <a href="#top" class="logo"><span class="mark">∞</span> Lemniscate</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#platform">Platform</a>
+      <a href="#suite">The Suite</a>
+      <a href="#how">How It Works</a>
+      <a href="#nova">See It Live</a>
+      <a href="#pricing">Membership</a>
+      <a href="#about">About</a>
+      <a href="#demo" class="btn btn-primary" style="margin-top:10px">Book a Demo</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#demo" class="btn btn-primary">Book a Demo</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<span id="top"></span>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="wash"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+  <div class="wrap">
+    <span class="pill"><span class="dot"></span> Built for real estate teams — and already running</span>
+    <h1>The AI operating system<br>for <span class="serif">real estate teams</span>.</h1>
+    <p class="lead">Automated social &amp; content, a smart CRM, AI voice &amp; concierge, and ad automation — one platform that markets your listings, works your leads, and follows up while you sleep.</p>
+    <div class="hero-cta">
+      <a href="#demo" class="btn btn-primary">Book a Demo</a>
+      <a href="#nova" class="btn btn-ghost">Talk to Nova →</a>
+    </div>
+    <div class="hero-sub">No new hires. No stitching five tools together. One membership.</div>
+  </div>
+</section>
+
+<!-- ===== INTEGRATIONS ===== -->
+<div class="integ" id="platform"><div class="wrap">
+  <div class="lab">Runs on the tools you already trust</div>
+  <div class="row">
+    <span class="chip"><span class="d"></span>OpenAI</span>
+    <span class="chip"><span class="d"></span>HeyGen</span>
+    <span class="chip"><span class="d"></span>GoHighLevel</span>
+    <span class="chip"><span class="d"></span>Twilio</span>
+    <span class="chip"><span class="d"></span>Meta</span>
+    <span class="chip"><span class="d"></span>Google</span>
+    <span class="chip"><span class="d"></span>n8n</span>
+    <span class="chip"><span class="d"></span>Supabase</span>
+  </div>
+</div></div>
+
+<!-- ===== PROBLEM / SOLUTION ===== -->
+<section class="sec-pad"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">The problem</span>
+    <h2>Marketing, CRM, and follow-up shouldn't need three tools and a full-time hire.</h2>
+    <p>Most teams duct-tape a scheduler, a CRM, a designer, and a caller together — then still drop leads. Lemniscate is one system that does all of it.</p>
+  </div>
+  <div class="ps">
+    <div class="card problem">
+      <h3>The everyday grind</h3>
+      <ul>
+        <li><span class="i">✕</span> A new listing means hours of captions, graphics, and posting by hand.</li>
+        <li><span class="i">✕</span> Leads sit for hours because nobody's free to call or text back.</li>
+        <li><span class="i">✕</span> Your CRM is a graveyard nobody updates.</li>
+        <li><span class="i">✕</span> Ad campaigns get launched once and never optimized.</li>
+        <li><span class="i">✕</span> Every tool bills separately and none of them talk to each other.</li>
+      </ul>
+    </div>
+    <div class="card sol">
+      <h3>With Lemniscate</h3>
+      <ul>
+        <li><span class="i">✓</span> One message becomes a blog, social posts, an AI image, and a clone video — with your approval.</li>
+        <li><span class="i">✓</span> Voss answers, texts, and books leads the instant they raise a hand.</li>
+        <li><span class="i">✓</span> Back Boss keeps the pipeline and transactions moving automatically.</li>
+        <li><span class="i">✓</span> Ad campaigns launch and keep optimizing across Meta.</li>
+        <li><span class="i">✓</span> All of it in one membership, working as one loop.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- ===== NOVA — LIVE DEMO ===== -->
+<section class="nova sec-pad" id="nova"><div class="wrap">
+  <div class="nova-grid">
+    <div class="nova-copy">
+      <span class="eyebrow">Interactive demo</span>
+      <h2>Meet your new AI support agent.</h2>
+      <p>Nova is a real-time AI concierge that talks with your leads and clients — answering questions, qualifying, and handing off to a human the moment it matters. Turn on your mic and have a conversation right now.</p>
+      <div class="badges">
+        <span class="badge"><span class="live"></span> Interactive demo · Live</span>
+        <span class="badge">🎙 Microphone enabled</span>
+        <span class="badge">⚡ Real-time</span>
+      </div>
+      <a href="#demo" class="btn btn-primary">Put Nova on my site</a>
+    </div>
+    <div>
+      <div class="nova-stage">
+        <iframe id="novaAvatar" allow="microphone" title="Nova — Lemniscate AI Concierge"></iframe>
+      </div>
+      <div class="nova-cap">Powered by <b>Lemniscate</b> · a live AI avatar, running in your browser</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ===== THE SUITE ===== -->
+<section class="sec-pad" id="suite"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">The suite</span>
+    <h2>Everything a modern team needs, in one loop.</h2>
+    <p>Six systems that share the same brain — your brand, your leads, your listings — so nothing gets retyped and nothing falls through.</p>
+  </div>
+  <div class="suite-grid">
+    <div class="scard"><div class="ic">🎙</div><div class="tag">Voice + SMS</div><h3>Voss</h3><p>An AI voice &amp; text assistant that answers inbound, follows up on new leads, and books appointments — 24/7, in your team's tone.</p></div>
+    <div class="scard"><div class="ic">🤖</div><div class="tag">Concierge</div><h3>Nova</h3><p>The interactive AI avatar you just met. Drops onto any page to greet, qualify, and route visitors to the right agent in seconds.</p></div>
+    <div class="scard"><div class="ic">✍️</div><div class="tag">Content engine</div><h3>Content Factory</h3><p>One message in → a full content suite out: blog post, social captions, an AI-generated image, and a clone video. You approve, it publishes.</p></div>
+    <div class="scard"><div class="ic">📊</div><div class="tag">CRM + AI</div><h3>Back Boss CRM</h3><p>Pipeline and transaction management that updates itself — every call, text, and milestone logged so deals actually move forward.</p></div>
+    <div class="scard"><div class="ic">🚀</div><div class="tag">Listing marketing</div><h3>The Launch Machine</h3><p>Market a listing everywhere the instant it goes live — social, email, single-property page, and ads — from one click.</p></div>
+    <div class="scard"><div class="ic">🎯</div><div class="tag">Paid ads</div><h3>AI Ad Campaigns</h3><p>Launch and continuously optimize Meta campaigns (with a Google/YouTube foundation) — targeting, creative, and budget handled for you.</p></div>
+    <div class="scard" style="grid-column:1/-1"><div class="ic">🗓</div><div class="tag">Daily ops layer</div><h3>Buyer Matching · Morning Brief · Meeting Recaps</h3><p>The quiet workhorse: match new inventory to your buyers, start each day with a brief on what needs attention, and get instant recaps after every meeting so follow-up writes itself.</p></div>
+  </div>
+</div></section>
+
+<!-- ===== WORKFLOW IN ACTION ===== -->
+<section class="flow sec-pad"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Workflow in action</span>
+    <h2>Watch one text turn into a week of marketing.</h2>
+    <p>A single message to Voss produces a full content suite — written, designed, filmed, and queued for your approval. Here's the whole loop, start to finish.</p>
+  </div>
+  <div class="video-wrap">
+    <!-- Swap the placeholder below for the Content Factory demo video:
+         replace this .ph block with:
+         <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Content Factory — Workflow in Action" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+    <div class="ph">
+      <div>
+        <div class="play">▶</div>
+        <h3>Content Factory — Workflow in Action</h3>
+        <p>Demo video coming here. (Drop in the screen recording of Voss producing a full content suite.)</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="sec-pad" id="how"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">How it works</span>
+    <h2>Live in days, not months.</h2>
+    <p>We handle the setup. You keep doing what closes deals.</p>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h3>Connect your tools</h3><p>Link your CRM, socials, calendar, and phone number. We map it to your brand and market.</p></div>
+    <div class="step"><div class="n">2</div><h3>We configure your AI</h3><p>Voss and Nova are trained on your voice, your listings, and your service area — no prompt engineering required.</p></div>
+    <div class="step"><div class="n">3</div><h3>Text it or go live</h3><p>Send one message to spin up content, or turn Nova loose on your site and Voss on your leads.</p></div>
+    <div class="step"><div class="n">4</div><h3>Approve &amp; publish</h3><p>Review what the system drafts, tap approve, and watch it post, call, and follow up — on repeat.</p></div>
+  </div>
+</div></section>
+
+<!-- ===== WHO IT'S FOR ===== -->
+<section class="sec-pad" style="background:var(--bg-2)"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Who it's for</span>
+    <h2>One platform, every stage of growth.</h2>
+  </div>
+  <div class="who-grid">
+    <div class="who"><div class="ic">🧑‍💼</div><h3>Solo agents</h3><p>Look like a team of ten. Automate the marketing and follow-up you never have time for, and never miss a lead again.</p></div>
+    <div class="who"><div class="ic">👥</div><h3>Teams</h3><p>Give every agent the same content engine and AI follow-up, with a shared pipeline the whole team can see and trust.</p></div>
+    <div class="who"><div class="ic">🏢</div><h3>Brokerages</h3><p>Roll out one branded system across every office and agent — consistent marketing, centralized leads, real accountability.</p></div>
+  </div>
+</div></section>
+
+<!-- ===== PRICING ===== -->
+<section class="sec-pad" id="pricing"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Membership</span>
+    <h2>One membership. The whole system.</h2>
+    <p>Simple plans that scale with your team. Final pricing is set during your demo — no long-term lock-in.</p>
+  </div>
+  <div class="price-grid">
+    <div class="tier">
+      <span class="badge-top">Solo</span>
+      <h3>Starter</h3>
+      <div class="pdesc">For the individual agent ready to automate their marketing and follow-up.</div>
+      <div class="price">$<span>[TBD]</span></div>
+      <div class="per">per month</div>
+      <ul>
+        <li><span class="ck">✓</span> Content Factory (posts + images)</li>
+        <li><span class="ck">✓</span> Nova AI concierge on your site</li>
+        <li><span class="ck">✓</span> Voss lead follow-up (SMS)</li>
+        <li><span class="ck">✓</span> Back Boss CRM</li>
+      </ul>
+      <a href="#demo" class="btn btn-ghost">Book a Demo</a>
+    </div>
+    <div class="tier feat">
+      <span class="badge-top">Most popular</span>
+      <h3>Team</h3>
+      <div class="pdesc">The full loop for growing teams — content, voice, ads, and pipeline.</div>
+      <div class="price">$<span>[TBD]</span></div>
+      <div class="per">per month</div>
+      <ul>
+        <li><span class="ck">✓</span> Everything in Starter</li>
+        <li><span class="ck">✓</span> Voss AI voice (inbound + outbound)</li>
+        <li><span class="ck">✓</span> The Launch Machine for listings</li>
+        <li><span class="ck">✓</span> AI Ad Campaigns (Meta)</li>
+        <li><span class="ck">✓</span> Buyer Matching · Morning Brief · Recaps</li>
+      </ul>
+      <a href="#demo" class="btn btn-light">Book a Demo</a>
+    </div>
+    <div class="tier">
+      <span class="badge-top">Brokerage</span>
+      <h3>Enterprise</h3>
+      <div class="pdesc">Rolled out across every office and agent, with onboarding and support.</div>
+      <div class="price">Custom</div>
+      <div class="per">let's scope it together</div>
+      <ul>
+        <li><span class="ck">✓</span> Everything in Team</li>
+        <li><span class="ck">✓</span> Multi-office &amp; multi-agent rollout</li>
+        <li><span class="ck">✓</span> Custom branding &amp; integrations</li>
+        <li><span class="ck">✓</span> Dedicated onboarding &amp; support</li>
+      </ul>
+      <a href="#demo" class="btn btn-ghost">Talk to us</a>
+    </div>
+  </div>
+</div></section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="sec-pad" style="background:var(--bg-2)"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Results</span>
+    <h2>What teams say.</h2>
+    <p>Real quotes land here as members come online. Placeholders for now.</p>
+  </div>
+  <div class="quotes">
+    <div class="quote"><div class="stars">★★★★★</div><p>"[Placeholder testimonial — replace with a real member quote about time saved and leads closed.]"</p><div class="who-q"><div class="av">A</div><div><div class="nm">Member Name</div><div class="rl">Team Lead · Market</div></div></div></div>
+    <div class="quote"><div class="stars">★★★★★</div><p>"[Placeholder testimonial — replace with a real member quote about the content engine or AI follow-up.]"</p><div class="who-q"><div class="av">B</div><div><div class="nm">Member Name</div><div class="rl">Broker · Market</div></div></div></div>
+    <div class="quote"><div class="stars">★★★★★</div><p>"[Placeholder testimonial — replace with a real member quote about setup and support.]"</p><div class="who-q"><div class="av">C</div><div><div class="nm">Member Name</div><div class="rl">Agent · Market</div></div></div></div>
+  </div>
+</div></section>
+
+<!-- ===== FAQ ===== -->
+<section class="sec-pad" id="about"><div class="wrap">
+  <div class="sec-head">
+    <span class="eyebrow">FAQ</span>
+    <h2>Questions, answered.</h2>
+  </div>
+  <div class="faq">
+    <details class="qa"><summary>What does Lemniscate integrate with?<span class="pm">+</span></summary><div class="a">Lemniscate runs on the tools you already use — GoHighLevel for CRM and messaging, Meta and Google for ads, Twilio for phone/SMS, plus OpenAI and HeyGen for the AI layer. If you don't have a stack yet, we set one up for you.</div></details>
+    <details class="qa"><summary>How long does setup take?<span class="pm">+</span></summary><div class="a">Most teams are live within a few days. We connect your tools, train Voss and Nova on your brand and market, and hand you an approve-and-publish workflow — no technical work on your end.</div></details>
+    <details class="qa"><summary>Am I locked into a long contract?<span class="pm">+</span></summary><div class="a">No long-term lock-in. It's a membership — you stay because it works. We'll cover the exact terms on your demo.</div></details>
+    <details class="qa"><summary>Who owns the data and content?<span class="pm">+</span></summary><div class="a">You do. Your leads, your CRM records, and everything the Content Factory produces belong to you and stay in your accounts.</div></details>
+    <details class="qa"><summary>Does the AI post without my approval?<span class="pm">+</span></summary><div class="a">Only if you want it to. By default, everything the system drafts — posts, videos, campaigns — waits for your approval before it goes out.</div></details>
+    <details class="qa"><summary>Is there support if I get stuck?<span class="pm">+</span></summary><div class="a">Yes. Every plan includes support, and Enterprise members get dedicated onboarding. Nova can also answer product questions right on this site.</div></details>
+  </div>
+</div></section>
+
+<!-- ===== DEMO / FINAL CTA ===== -->
+<section class="demo sec-pad" id="demo"><div class="wrap">
+  <div class="demo-card">
+    <div class="wash"><div class="blob b1"></div></div>
+    <div>
+      <span class="eyebrow">Book a demo</span>
+      <h2>See the whole loop, live.</h2>
+      <p>Tell us about your team and we'll walk you through Lemniscate on your own listings and leads. 20 minutes, no pressure.</p>
+      <div class="pt"><span class="ck">✓</span> A live look at Voss, Nova, and the Content Factory</div>
+      <div class="pt"><span class="ck">✓</span> Pricing tailored to your team size</div>
+      <div class="pt"><span class="ck">✓</span> Setup timeline for going live</div>
+    </div>
+    <div>
+      <div id="formMsg" class="form-msg"></div>
+      <form id="demoForm" novalidate>
+        <div class="row2">
+          <div class="fld"><input id="fFirst" type="text" placeholder="First name" autocomplete="given-name" required></div>
+          <div class="fld"><input id="fLast" type="text" placeholder="Last name" autocomplete="family-name"></div>
+        </div>
+        <div class="fld"><input id="fEmail" type="email" placeholder="Work email" autocomplete="email" required></div>
+        <div class="fld"><input id="fPhone" type="tel" placeholder="Phone" autocomplete="tel" required></div>
+        <div class="fld"><input id="fCompany" type="text" placeholder="Brokerage / team name"></div>
+        <div class="fld"><select id="fRole">
+          <option value="">I'm a…</option>
+          <option>Solo agent</option><option>Team lead</option><option>Broker / owner</option><option>Marketing / ops</option><option>Other</option>
+        </select></div>
+        <div class="fld"><textarea id="fMsg" placeholder="What are you hoping to automate?"></textarea></div>
+        <button type="submit" class="btn btn-primary" id="fSubmit" style="width:100%">Book my demo</button>
+        <div class="form-note">By submitting you agree to be contacted about Lemniscate. We never sell your data.</div>
+      </form>
+    </div>
+  </div>
+</div></section>
+
+<!-- ===== FOOTER ===== -->
+<footer><div class="wrap">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a href="#top" class="logo"><span class="mark">∞</span> Lemniscate</a>
+      <p>The AI operating system for real estate teams. Content, CRM, voice, and ads — one loop that never sleeps.</p>
+    </div>
+    <div class="foot-col"><h4>Sub-brands</h4>
+      <a href="#suite">Voss — AI Voice</a>
+      <a href="#suite">Nova — AI Concierge</a>
+      <a href="#suite">Content Factory</a>
+      <a href="#suite">Back Boss CRM</a>
+      <a href="#suite">The Launch Machine</a>
+    </div>
+    <div class="foot-col"><h4>Company</h4>
+      <a href="#platform">Platform</a>
+      <a href="#how">How It Works</a>
+      <a href="#pricing">Membership</a>
+      <a href="#about">FAQ</a>
+      <a href="#demo">Book a Demo</a>
+    </div>
+    <div class="foot-col"><h4>Legal</h4>
+      <a href="/privacy-policy.html">Privacy Policy</a>
+      <a href="/terms-of-use.html">Terms of Use</a>
+      <a href="mailto:hello@lemniscatemarketingsystems.com">Contact</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="yr"></span> Lemniscate Marketing Systems. All rights reserved.</span>
+    <div class="soc"><a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">YouTube</a></div>
+  </div>
+</div></footer>
+
+<script>
+  // ---- year ----
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // ---- mobile nav ----
+  (function(){
+    var b=document.getElementById('burger'), n=document.getElementById('navLinks');
+    b.addEventListener('click',function(){ n.classList.toggle('open'); });
+    n.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ n.classList.remove('open'); }); });
+  })();
+
+  // ---- Nova LiveAvatar: vertical on phones, horizontal on larger screens ----
+  (function(){
+    var f=document.getElementById('novaAvatar'); if(!f) return;
+    var vertical='https://embed.liveavatar.com/v1/7b891411-cd07-4eee-90da-72de1a8f58df?orientation=vertical';
+    var horizontal='https://embed.liveavatar.com/v1/1a0033df-99d4-4b61-ad7b-06bae94462d2?orientation=horizontal';
+    f.src=(window.matchMedia && window.matchMedia('(max-width:560px)').matches)?vertical:horizontal;
+  })();
+
+  // ---- Demo form → marketing-inquire (records to the leads dashboard + GHL) ----
+  // Uses an absolute URL so the form still works if this page is later served
+  // from its own domain (lemniscatemarketingsystems.com) as a separate site.
+  (function(){
+    var ENDPOINT = (location.hostname.indexOf('elitelivingrealty') !== -1 || location.protocol === 'file:')
+      ? '/.netlify/functions/marketing-inquire'
+      : 'https://www.elitelivingrealty.com/.netlify/functions/marketing-inquire';
+    var form=document.getElementById('demoForm'), msg=document.getElementById('formMsg'), btn=document.getElementById('fSubmit');
+    function show(kind,text){ msg.className='form-msg '+kind; msg.textContent=text; msg.scrollIntoView({behavior:'smooth',block:'center'}); }
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      var first=document.getElementById('fFirst').value.trim();
+      var email=document.getElementById('fEmail').value.trim();
+      var phone=document.getElementById('fPhone').value.trim();
+      if(!first || !email || !phone){ show('err','Please add your name, email, and phone so we can reach you.'); return; }
+      btn.disabled=true; btn.textContent='Sending…';
+      try{
+        var res=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            first_name:first,
+            last_name:document.getElementById('fLast').value.trim(),
+            email:email, phone:phone,
+            company:document.getElementById('fCompany').value.trim(),
+            role:document.getElementById('fRole').value,
+            package:'Lemniscate Marketing Systems',
+            intent:'book',
+            message:document.getElementById('fMsg').value.trim(),
+            page_url:location.href
+          })});
+        var j=await res.json().catch(function(){return {};});
+        if(!res.ok || j.ok===false) throw new Error((j&&j.error)||('Error '+res.status));
+        form.style.display='none';
+        show('ok','You’re booked in — we’ll reach out shortly to lock in a time. Talk soon.');
+      }catch(err){
+        btn.disabled=false; btn.textContent='Book my demo';
+        show('err','Something went wrong — please try again, or email hello@lemniscatemarketingsystems.com.');
+      }
+    });
+  })();
+</script>
+
+<!-- ============================================================
+     GHL CHAT WIDGET (bottom-right) — optional.
+     Add Lemniscate's own LeadConnector widget id and uncomment:
+  <script src="https://beta.leadconnectorhq.com/loader.js"
+          data-resources-url="https://beta.leadconnectorhq.com/chat-widget/loader.js"
+          data-widget-id="YOUR_LEMNISCATE_WIDGET_ID"></script>
+     ============================================================ -->
+
+</body>
+</html>
