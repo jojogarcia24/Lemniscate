@@ -1,6 +1,23 @@
 // ---- year ----
 (function(){ var y=document.getElementById('yr'); if(y) y.textContent=new Date().getFullYear(); })();
 
+// ---- typewriter (Broker CRM "You can ___") ----
+(function(){
+  var el=document.getElementById('typeword'); if(!el) return;
+  var words=['Launch.','Automate.','Scale.','Convert.','Dominate.'];
+  var w=0,c=0,deleting=false;
+  function tick(){
+    var word=words[w];
+    c += deleting ? -1 : 1;
+    el.textContent=word.slice(0,c);
+    var delay=deleting?55:95;
+    if(!deleting && c===word.length){ deleting=true; delay=1400; }
+    else if(deleting && c===0){ deleting=false; w=(w+1)%words.length; delay=350; }
+    setTimeout(tick,delay);
+  }
+  el.textContent=''; setTimeout(tick,600);
+})();
+
 // ---- mobile nav ----
 (function(){
   var b=document.getElementById('burger'), n=document.getElementById('navLinks');
