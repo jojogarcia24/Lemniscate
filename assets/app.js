@@ -211,3 +211,75 @@
     }
   });
 })();
+
+// ---- Blog index: render published posts from Supabase ----
+(function(){
+  var grid=document.getElementById('blogGrid'); if(!grid || !window.LM) return;
+  var feat=document.getElementById('blogFeatured'), state=document.getElementById('blogState');
+  function fmt(iso){ try{ return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
+  function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; }
+  function grad(s){ return String(s||'').replace(/["'<>]/g,''); }
+  var url=LM.URL+'/rest/v1/blog_posts?select=slug,title,category,excerpt,cover_gradient,read_minutes,published_at&status=eq.published&order=published_at.desc';
+  fetch(url,{headers:{apikey:LM.KEY,Authorization:'Bearer '+LM.KEY}})
+    .then(function(r){ return r.ok?r.json():[]; })
+    .then(function(posts){
+      if(!Array.isArray(posts) || !posts.length){
+        if(state) state.textContent='Fresh posts are on the way — check back soon.';
+        return;
+      }
+      if(state) state.style.display='none';
+      var f=posts[0];
+      if(feat){
+        feat.href='post.html?slug='+encodeURIComponent(f.slug);
+        var img=feat.querySelector('.bh-img'); if(img) img.style.background=grad(f.cover_gradient);
+        feat.querySelector('.cat').textContent=f.category;
+        feat.querySelector('h2').textContent=f.title;
+        feat.querySelector('p').textContent=f.excerpt||'';
+        feat.querySelector('.meta').textContent=fmt(f.published_at)+' · '+(parseInt(f.read_minutes)||5)+' min read';
+        feat.style.display='';
+      }
+      grid.innerHTML=posts.slice(1).map(function(p){
+        return '<a class="post" href="post.html?slug='+encodeURIComponent(p.slug)+'">'+
+          '<div class="thumb" style="background:'+grad(p.cover_gradient)+'"><span class="cat">'+esc(p.category)+'</span></div>'+
+          '<div class="pbody"><h3>'+esc(p.title)+'</h3><p>'+esc(p.excerpt||'')+'</p>'+
+          '<span class="meta">'+esc(fmt(p.published_at))+' · '+(parseInt(p.read_minutes)||5)+' min read</span></div></a>';
+      }).join('');
+    })
+    .catch(function(){ if(state) state.textContent='We couldn’t load posts right now — please refresh in a moment.'; });
+})();
+
+// ---- Single post viewer (post.html) ----
+(function(){
+  var art=document.getElementById('postArticle'); if(!art || !window.LM) return;
+  var titleEl=document.getElementById('postTitle'), catEl=document.getElementById('postCat'),
+      metaEl=document.getElementById('postMeta'), bodyEl=document.getElementById('postBody'),
+      excEl=document.getElementById('postExcerpt'), coverEl=document.getElementById('postCover'),
+      stateEl=document.getElementById('postState');
+  function fmt(iso){ try{ return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
+  function grad(s){ return String(s||'').replace(/["'<>]/g,''); }
+  var slug=(new URLSearchParams(location.search)).get('slug')||'';
+  if(!slug){ if(stateEl) stateEl.textContent='Post not found.'; return; }
+  var url=LM.URL+'/rest/v1/blog_posts?select=slug,title,category,excerpt,body,cover_gradient,read_minutes,published_at,author&status=eq.published&slug=eq.'+encodeURIComponent(slug)+'&limit=1';
+  fetch(url,{headers:{apikey:LM.KEY,Authorization:'Bearer '+LM.KEY}})
+    .then(function(r){ return r.ok?r.json():[]; })
+    .then(function(rows){
+      var p=rows&&rows[0];
+      if(!p){ if(stateEl) stateEl.textContent='That post isn’t available. It may have been unpublished.'; return; }
+      document.title=p.title+' — Lemniscate';
+      if(catEl) catEl.textContent=p.category;
+      if(titleEl) titleEl.textContent=p.title;
+      if(excEl) excEl.textContent=p.excerpt||'';
+      if(metaEl) metaEl.textContent=(p.author||'Lemniscate')+' · '+fmt(p.published_at)+' · '+(parseInt(p.read_minutes)||5)+' min read';
+      if(coverEl) coverEl.style.background=grad(p.cover_gradient);
+      if(bodyEl){
+        bodyEl.innerHTML='';
+        String(p.body||'').split(/\n\s*\n/).forEach(function(para){
+          var t=para.trim(); if(!t) return;
+          var el=document.createElement('p'); el.textContent=t; bodyEl.appendChild(el);
+        });
+      }
+      if(stateEl) stateEl.style.display='none';
+      if(art) art.style.display='';
+    })
+    .catch(function(){ if(stateEl) stateEl.textContent='We couldn’t load this post — please refresh in a moment.'; });
+})();
