@@ -10,7 +10,7 @@ window.LM = (function(){
     return Object.assign({ apikey:KEY, Authorization:'Bearer '+KEY, 'Content-Type':'application/json' }, extra||{});
   }
   function insert(table, row, opts){
-    return fetch(REST+table, Object.assign({ method:'POST', headers:headers({ Prefer:(opts&&opts.rep)?'return=representation':'return=minimal' }), body:JSON.stringify(row) }, (opts&&opts.fetch)||{}));
+    return fetch(REST+table, Object.assign({ method:'POST', headers:headers({ Prefer:(opts&&opts.rep)?'return=representation':'return=minimal' }), body:JSON.stringify(row) }, (opts&&opts.fetch)||{})).catch(function(){ return null; });
   }
   function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
   function sid(){ var s=ls('lm_sid'); if(!s){ s='s_'+Math.random().toString(36).slice(2)+Date.now().toString(36); ls('lm_sid',s);} return s; }
