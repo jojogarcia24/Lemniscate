@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Lemniscate</title>
+<meta name="description" content="Ideas on AI, broker systems, and social media for modern real estate teams — from the Lemniscate content engine.">
+<meta property="og:title" content="Blog — Lemniscate">
+<meta property="og:description" content="Ideas on AI, broker systems, and social media for modern real estate teams.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script>document.documentElement.className+=' js';</script>
+</head>
+<body>
+
+<span id="top"></span>
+
+<!-- ===== NAV ===== -->
+<header>
+  <nav class="wrap">
+    <a href="index.html" class="logo"><span class="mark">∞</span> Lemniscate</a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="social.html">Social</a>
+      <a href="broker-crm.html">Broker CRM</a>
+      <a href="ai-integrations.html">AI Integrations</a>
+      <a href="blog.html" class="active">Blog</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="btn btn-primary" style="margin-top:10px">Book a Call</a>
+    </div>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-primary">Book a Call</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="crm-hero" style="padding-bottom:20px">
+  <div class="wash"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div></div>
+  <div class="wrap">
+    <span class="eyebrow" style="justify-content:center">The Lemniscate Blog</span>
+    <h1 style="margin-top:14px">Ideas for the <span class="serif">AI-powered</span> team.</h1>
+    <p>AI, broker systems, and social media — practical playbooks for modern real estate teams. Fresh posts published weekly.</p>
+  </div>
+</section>
+
+<!-- ===== FEATURED + GRID (rendered from Supabase by assets/app.js) ===== -->
+<section class="sec-pad" style="padding-top:20px"><div class="wrap">
+
+  <!-- Featured post -->
+  <a class="blog-hero" id="blogFeatured" href="#" style="display:none">
+    <div class="bh-img"></div>
+    <div class="bh-body">
+      <span class="cat"></span>
+      <h2></h2>
+      <p></p>
+      <span class="meta"></span>
+    </div>
+  </a>
+
+  <div class="blog-grid" id="blogGrid" aria-live="polite"></div>
+
+  <p id="blogState" style="text-align:center;color:var(--muted);padding:36px 0">Loading the latest posts…</p>
+</div></section>
+
+<!-- ===== FOOTER (prelaunch band injected before this by build) ===== -->
+<!-- ===== PRE-MARKET SIGNUP ===== -->
+<section class="prelaunch">
+  <div class="wrap">
+    <div>
+      <h3>Get early access to <span class="serif">pre-market</span> concepts &amp; programs.</h3>
+      <p>Join the list for first looks at off-market listings, new AI programs, and launches — before they go public.</p>
+    </div>
+    <form class="pl-form" id="preForm">
+      <div id="preMsg" class="pl-msg"></div>
+      <div class="row2">
+        <div class="fld"><input id="pName" type="text" placeholder="Full name" autocomplete="name" required></div>
+        <div class="fld"><input id="pEmail" type="email" placeholder="Email" autocomplete="email" required></div>
+      </div>
+      <div class="fld"><input id="pPhone" type="tel" placeholder="Mobile (for text updates)" autocomplete="tel"></div>
+      <button type="submit" class="btn btn-primary" id="pSubmit">Join the list</button>
+      <div class="pl-note">We'll only reach out about pre-market drops &amp; programs. Opt out anytime.</div>
+    </form>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a href="index.html" class="logo"><span class="mark">∞</span> Lemniscate</a>
+      <p>Scaling real estate teams with AI storytelling and high-performance marketing workflows — social, content, CRM, and AI systems in one loop.</p>
+    </div>
+    <div class="foot-col"><h4>Systems</h4>
+      <a href="social.html">Social Media</a>
+      <a href="ai-integrations.html">AI Integrations</a>
+      <a href="broker-crm.html">Broker CRM</a>
+      <a href="ai-integrations.html">Nova — AI Concierge</a>
+    </div>
+    <div class="foot-col"><h4>Company</h4>
+      <a href="index.html#services">Services</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+      <a href="admin.html">Team Login</a>
+    </div>
+    <div class="foot-col"><h4>Legal</h4>
+      <a href="/privacy-policy.html">Privacy Policy</a>
+      <a href="/terms-of-use.html">Terms of Use</a>
+      <a href="mailto:hello@lemniscatemarketingsystems.com">Contact</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© <span id="yr"></span> Lemniscate Marketing Systems. All rights reserved.</span>
+    <div class="soc"><a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">YouTube</a></div>
+  </div>
+</div></footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<a class="chat-fab" href="contact.html" aria-label="Chat with us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+
+<script src="assets/lm.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

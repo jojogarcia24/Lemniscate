@@ -79,6 +79,7 @@
     var phone=document.getElementById('fPhone').value.trim();
     if(!first || !email || !phone){ show('err','Please add your name, email, and phone so we can reach you.'); return; }
     btn.disabled=true; btn.textContent='Sending…';
+    if(window.LM) LM.insertLead({ first_name:first, last_name:document.getElementById('fLast').value.trim(), email:email, phone:phone, company:document.getElementById('fCompany').value.trim(), role_text:document.getElementById('fRole').value, intent:'book', message:document.getElementById('fMsg').value.trim(), source_page:(location.pathname.split('/').pop()||'index.html') });
     try{
       var res=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
@@ -174,4 +175,111 @@
   if(run) run.addEventListener('click',simulate);
   if(reset) reset.addEventListener('click',resetTerm);
   load('lead-triage');
+})();
+
+// ---- Pre-market signup (footer) → marketing-inquire ----
+(function(){
+  var form=document.getElementById('preForm'); if(!form) return;
+  var ENDPOINT = (location.hostname.indexOf('elitelivingrealty') !== -1 || location.protocol === 'file:')
+    ? '/.netlify/functions/marketing-inquire'
+    : 'https://www.elitelivingrealty.com/.netlify/functions/marketing-inquire';
+  var msg=document.getElementById('preMsg'), btn=document.getElementById('pSubmit');
+  function show(kind,text){ msg.className='pl-msg '+kind; msg.textContent=text; }
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var name=document.getElementById('pName').value.trim();
+    var email=document.getElementById('pEmail').value.trim();
+    var phone=document.getElementById('pPhone').value.trim();
+    if(!name || !email){ show('err','Please add your name and email to join the list.'); return; }
+    var parts=name.split(/\s+/); var first=parts.shift()||name; var last=parts.join(' ');
+    btn.disabled=true; btn.textContent='Joining…';
+    if(window.LM) LM.insertLead({ first_name:first, last_name:last, email:email, phone:phone, intent:'prelaunch', message:'Pre-market list signup', source_page:(location.pathname.split('/').pop()||'index.html') });
+    try{
+      var res=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          first_name:first, last_name:last, email:email, phone:phone,
+          package:'Lemniscate Marketing Systems', intent:'prelaunch',
+          message:'Pre-market list signup', page_url:location.href
+        })});
+      var j=await res.json().catch(function(){return {};});
+      if(!res.ok || j.ok===false) throw new Error((j&&j.error)||('Error '+res.status));
+      form.reset(); show('ok','You’re on the list — we’ll be in touch with early access. 🎉');
+      btn.disabled=false; btn.textContent='Join the list';
+    }catch(err){
+      btn.disabled=false; btn.textContent='Join the list';
+      show('err','Something went wrong — please try again, or email hello@lemniscatemarketingsystems.com.');
+    }
+  });
+})();
+
+// ---- Blog index: render published posts from Supabase ----
+(function(){
+  var grid=document.getElementById('blogGrid'); if(!grid || !window.LM) return;
+  var feat=document.getElementById('blogFeatured'), state=document.getElementById('blogState');
+  function fmt(iso){ try{ return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
+  function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; }
+  function grad(s){ return String(s||'').replace(/["'<>]/g,''); }
+  var url=LM.URL+'/rest/v1/blog_posts?select=slug,title,category,excerpt,cover_gradient,read_minutes,published_at&status=eq.published&order=published_at.desc';
+  fetch(url,{headers:{apikey:LM.KEY,Authorization:'Bearer '+LM.KEY}})
+    .then(function(r){ return r.ok?r.json():[]; })
+    .then(function(posts){
+      if(!Array.isArray(posts) || !posts.length){
+        if(state) state.textContent='Fresh posts are on the way — check back soon.';
+        return;
+      }
+      if(state) state.style.display='none';
+      var f=posts[0];
+      if(feat){
+        feat.href='post.html?slug='+encodeURIComponent(f.slug);
+        var img=feat.querySelector('.bh-img'); if(img) img.style.background=grad(f.cover_gradient);
+        feat.querySelector('.cat').textContent=f.category;
+        feat.querySelector('h2').textContent=f.title;
+        feat.querySelector('p').textContent=f.excerpt||'';
+        feat.querySelector('.meta').textContent=fmt(f.published_at)+' · '+(parseInt(f.read_minutes)||5)+' min read';
+        feat.style.display='';
+      }
+      grid.innerHTML=posts.slice(1).map(function(p){
+        return '<a class="post" href="post.html?slug='+encodeURIComponent(p.slug)+'">'+
+          '<div class="thumb" style="background:'+grad(p.cover_gradient)+'"><span class="cat">'+esc(p.category)+'</span></div>'+
+          '<div class="pbody"><h3>'+esc(p.title)+'</h3><p>'+esc(p.excerpt||'')+'</p>'+
+          '<span class="meta">'+esc(fmt(p.published_at))+' · '+(parseInt(p.read_minutes)||5)+' min read</span></div></a>';
+      }).join('');
+    })
+    .catch(function(){ if(state) state.textContent='We couldn’t load posts right now — please refresh in a moment.'; });
+})();
+
+// ---- Single post viewer (post.html) ----
+(function(){
+  var art=document.getElementById('postArticle'); if(!art || !window.LM) return;
+  var titleEl=document.getElementById('postTitle'), catEl=document.getElementById('postCat'),
+      metaEl=document.getElementById('postMeta'), bodyEl=document.getElementById('postBody'),
+      excEl=document.getElementById('postExcerpt'), coverEl=document.getElementById('postCover'),
+      stateEl=document.getElementById('postState');
+  function fmt(iso){ try{ return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
+  function grad(s){ return String(s||'').replace(/["'<>]/g,''); }
+  var slug=(new URLSearchParams(location.search)).get('slug')||'';
+  if(!slug){ if(stateEl) stateEl.textContent='Post not found.'; return; }
+  var url=LM.URL+'/rest/v1/blog_posts?select=slug,title,category,excerpt,body,cover_gradient,read_minutes,published_at,author&status=eq.published&slug=eq.'+encodeURIComponent(slug)+'&limit=1';
+  fetch(url,{headers:{apikey:LM.KEY,Authorization:'Bearer '+LM.KEY}})
+    .then(function(r){ return r.ok?r.json():[]; })
+    .then(function(rows){
+      var p=rows&&rows[0];
+      if(!p){ if(stateEl) stateEl.textContent='That post isn’t available. It may have been unpublished.'; return; }
+      document.title=p.title+' — Lemniscate';
+      if(catEl) catEl.textContent=p.category;
+      if(titleEl) titleEl.textContent=p.title;
+      if(excEl) excEl.textContent=p.excerpt||'';
+      if(metaEl) metaEl.textContent=(p.author||'Lemniscate')+' · '+fmt(p.published_at)+' · '+(parseInt(p.read_minutes)||5)+' min read';
+      if(coverEl) coverEl.style.background=grad(p.cover_gradient);
+      if(bodyEl){
+        bodyEl.innerHTML='';
+        String(p.body||'').split(/\n\s*\n/).forEach(function(para){
+          var t=para.trim(); if(!t) return;
+          var el=document.createElement('p'); el.textContent=t; bodyEl.appendChild(el);
+        });
+      }
+      if(stateEl) stateEl.style.display='none';
+      if(art) art.style.display='';
+    })
+    .catch(function(){ if(stateEl) stateEl.textContent='We couldn’t load this post — please refresh in a moment.'; });
 })();
