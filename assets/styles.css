@@ -715,3 +715,26 @@
     .dcards,.dnum,.dprice,.chat2,.calc{grid-template-columns:1fr}
     .slide{padding:64px 24px}
   }
+
+/* ===== PWA install prompt ===== */
+.lm-install{position:fixed;left:12px;right:12px;bottom:12px;z-index:1200;display:flex;align-items:center;gap:12px;background:#15151c;color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:11px 12px;box-shadow:0 18px 50px -18px rgba(0,0,0,.7);transform:translateY(160%);transition:transform .38s cubic-bezier(.2,.8,.2,1)}
+.lm-install.show{transform:translateY(0)}
+.lm-install img{width:46px;height:46px;border-radius:12px;flex:0 0 auto}
+.lm-install-txt{display:flex;flex-direction:column;line-height:1.28;flex:1 1 auto;min-width:0}
+.lm-install-txt b{font-family:'Sora',sans-serif;font-size:14.5px}
+.lm-install-txt span{font-size:12.5px;color:rgba(255,255,255,.6)}
+.lm-install-btn{flex:0 0 auto;background:#635bff;color:#fff;border:none;border-radius:10px;padding:10px 17px;font-family:'Sora',sans-serif;font-weight:600;font-size:14px;cursor:pointer}
+.lm-install-btn:hover{background:#5049e6}
+.lm-install-x{flex:0 0 auto;background:transparent;border:none;color:rgba(255,255,255,.5);font-size:23px;line-height:1;cursor:pointer;padding:0 4px}
+@media(min-width:560px){.lm-install{left:auto;right:20px;bottom:20px;width:420px}}
+
+.lm-ios-help{position:fixed;inset:0;z-index:1300;background:rgba(4,4,10,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity .25s;padding:0 12px 12px}
+.lm-ios-help.show{opacity:1}
+.lm-ios-card{position:relative;background:#fff;color:#0e0e14;border-radius:18px;padding:26px 22px 24px;max-width:400px;width:100%;text-align:center;transform:translateY(24px);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.lm-ios-help.show .lm-ios-card{transform:translateY(0)}
+.lm-ios-card img{width:56px;height:56px;border-radius:14px;margin-bottom:12px}
+.lm-ios-card h4{font-family:'Sora',sans-serif;font-size:18px;margin-bottom:8px;color:#0e0e14}
+.lm-ios-card p{font-size:14.5px;color:#54545d;line-height:1.55}
+.lm-ios-card .lm-install-x{position:absolute;top:10px;right:12px;color:#9a9aa6;font-size:24px}
+.lm-share{display:inline-block;color:#635bff;font-weight:700}
+@media(min-width:560px){.lm-ios-help{align-items:center}}

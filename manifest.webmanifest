@@ -1,0 +1,22 @@
+{
+  "name": "Lemniscate Marketing Systems",
+  "short_name": "Lemniscate",
+  "description": "AI, broker systems, and social media in one loop for modern real estate teams.",
+  "start_url": "/index.html?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e0e12",
+  "theme_color": "#0e0e12",
+  "categories": ["business", "productivity", "marketing"],
+  "icons": [
+    { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Book a Call", "url": "/contact.html", "description": "Talk to the Lemniscate team" },
+    { "name": "Blog", "url": "/blog.html", "description": "Latest AI & real estate playbooks" },
+    { "name": "Team Login", "url": "/admin.html", "description": "Staff admin dashboard" }
+  ]
+}
