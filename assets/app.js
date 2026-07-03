@@ -79,6 +79,7 @@
     var phone=document.getElementById('fPhone').value.trim();
     if(!first || !email || !phone){ show('err','Please add your name, email, and phone so we can reach you.'); return; }
     btn.disabled=true; btn.textContent='Sending…';
+    if(window.LM) LM.insertLead({ first_name:first, last_name:document.getElementById('fLast').value.trim(), email:email, phone:phone, company:document.getElementById('fCompany').value.trim(), role_text:document.getElementById('fRole').value, intent:'book', message:document.getElementById('fMsg').value.trim(), source_page:(location.pathname.split('/').pop()||'index.html') });
     try{
       var res=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
@@ -192,6 +193,7 @@
     if(!name || !email){ show('err','Please add your name and email to join the list.'); return; }
     var parts=name.split(/\s+/); var first=parts.shift()||name; var last=parts.join(' ');
     btn.disabled=true; btn.textContent='Joining…';
+    if(window.LM) LM.insertLead({ first_name:first, last_name:last, email:email, phone:phone, intent:'prelaunch', message:'Pre-market list signup', source_page:(location.pathname.split('/').pop()||'index.html') });
     try{
       var res=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({

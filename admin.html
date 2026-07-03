@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — Lemniscate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body{background:var(--bg-2)}
+  .admin-top{background:var(--dark);color:#fff;padding:14px 0}
+  .admin-top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .admin-top .logo{color:#fff}.admin-top .logo .mark{background:rgba(255,255,255,.12)}
+  .admin-top .who{font-size:13px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:14px}
+  .admin-top .who a{color:#fff;font-weight:600;cursor:pointer}
+  .login-wrap{max-width:420px;margin:8vh auto;background:#fff;border:1px solid var(--line);border-radius:22px;padding:38px;box-shadow:var(--shadow-lg)}
+  .login-wrap h1{font-size:24px;margin:6px 0 6px}
+  .login-wrap p{color:var(--ink-2);font-size:14px;margin-bottom:20px}
+  .login-wrap input{width:100%;border:1px solid var(--line-2);border-radius:12px;padding:14px;font-family:inherit;font-size:15px;margin-bottom:12px}
+  .login-wrap input:focus{outline:none;border-color:var(--accent)}
+  .msg{font-size:14px;border-radius:11px;padding:11px 13px;margin-top:12px}
+  .msg.ok{background:rgba(32,178,106,.1);color:#178a52}.msg.err{background:rgba(216,80,63,.1);color:#c0402f}
+  .tabs{display:flex;gap:6px;margin:26px 0 22px;flex-wrap:wrap}
+  .tabs button{font-family:'Sora',sans-serif;font-weight:600;font-size:14px;padding:10px 18px;border-radius:100px;border:1px solid var(--line-2);background:#fff;color:var(--ink-2);cursor:pointer}
+  .tabs button.on{background:var(--dark);color:#fff;border-color:var(--dark)}
+  .panel{display:none}.panel.on{display:block}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+  .bar h2{font-size:20px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+  th{font-family:'Sora',sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);background:var(--bg-2)}
+  tr:last-child td{border-bottom:0}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;font-family:'Sora',sans-serif}
+  .pill.new{background:rgba(99,91,255,.12);color:#635bff}
+  .pill.book{background:rgba(32,178,106,.12);color:#178a52}
+  .pill.prelaunch{background:rgba(242,181,58,.16);color:#8a6d1a}
+  .rate{display:inline-flex;align-items:center;gap:7px}
+  .rate .barp{width:60px;height:7px;border-radius:100px;background:var(--line);overflow:hidden}
+  .rate .barp i{display:block;height:100%;background:linear-gradient(90deg,#635bff,#20b26a)}
+  .mini{font-size:12px;color:var(--ink-3)}
+  .row-act{display:flex;gap:8px}
+  .btn-sm{font-family:'Sora',sans-serif;font-weight:600;font-size:12.5px;padding:7px 13px;border-radius:9px;border:1px solid var(--line-2);background:#fff;cursor:pointer;color:var(--ink)}
+  .btn-sm.dark{background:var(--dark);color:#fff;border-color:var(--dark)}
+  .btn-sm.danger{color:#c0402f;border-color:rgba(216,80,63,.3)}
+  .modal{position:fixed;inset:0;background:rgba(14,14,20,.5);display:none;place-items:center;z-index:200;padding:20px}
+  .modal.on{display:grid}
+  .modal .box{background:#fff;border-radius:20px;max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:30px;box-shadow:var(--shadow-lg)}
+  .modal h3{font-size:20px;margin-bottom:18px}
+  .fld{margin-bottom:12px}.fld label{display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:5px;font-family:'Sora',sans-serif}
+  .fld input,.fld select,.fld textarea{width:100%;border:1px solid var(--line-2);border-radius:11px;padding:12px;font-family:inherit;font-size:14.5px}
+  .fld textarea{min-height:120px;resize:vertical}
+  .fld.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .modal-act{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+  .empty{padding:40px;text-align:center;color:var(--ink-3)}
+  .tablewrap{overflow-x:auto}
+  @media(max-width:640px){ th:nth-child(4),td:nth-child(4){display:none} }
+</style>
+</head>
+<body data-lm-notrack>
+
+<div class="admin-top"><div class="wrap">
+  <span class="logo"><span class="mark">∞</span> Lemniscate <span style="font-weight:500;color:rgba(255,255,255,.5)">Admin</span></span>
+  <span class="who" id="who" style="display:none"><span id="whoEmail"></span><a id="logout">Sign out</a></span>
+</div></div>
+
+<!-- LOGIN -->
+<div id="login" class="login-wrap">
+  <span class="logo" style="justify-content:flex-start"><span class="mark">∞</span> Lemniscate</span>
+  <h1>Admin sign-in</h1>
+  <p>Enter your admin email and we'll send you a magic sign-in link.</p>
+  <input id="email" type="email" placeholder="you@company.com" autocomplete="email">
+  <button class="btn btn-primary" id="sendLink" style="width:100%">Send magic link</button>
+  <div id="loginMsg"></div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dash" class="wrap" style="display:none;padding-top:26px;padding-bottom:60px">
+  <div class="tabs">
+    <button data-tab="leads" class="on">Leads</button>
+    <button data-tab="activity">Activity &amp; Heat</button>
+    <button data-tab="blog">Blog</button>
+  </div>
+
+  <!-- LEADS -->
+  <div class="panel on" id="panel-leads">
+    <div class="bar"><h2>Leads</h2><button class="btn-sm dark" id="newLead">+ New lead</button></div>
+    <div class="card tablewrap">
+      <table><thead><tr><th>Name</th><th>Contact</th><th>Intent</th><th>Source</th><th>Rating</th><th>Status</th><th></th></tr></thead>
+      <tbody id="leadsBody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody></table>
+    </div>
+  </div>
+
+  <!-- ACTIVITY -->
+  <div class="panel" id="panel-activity">
+    <div class="bar"><h2>Activity &amp; heat</h2><span class="mini">Dwell time per visitor over the last 7 days. Long sessions = warm lead.</span></div>
+    <div class="card tablewrap">
+      <table><thead><tr><th>Visitor</th><th>Top page</th><th>Total dwell</th><th>Views</th><th>Last seen</th></tr></thead>
+      <tbody id="actBody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody></table>
+    </div>
+  </div>
+
+  <!-- BLOG -->
+  <div class="panel" id="panel-blog">
+    <div class="bar"><h2>Blog posts</h2><button class="btn-sm dark" id="newPost">+ New post</button></div>
+    <div class="card tablewrap">
+      <table><thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Published</th><th></th></tr></thead>
+      <tbody id="blogBody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- LEAD MODAL -->
+<div class="modal" id="leadModal"><div class="box">
+  <h3 id="leadModalTitle">Edit lead</h3>
+  <input type="hidden" id="lmId">
+  <div class="fld row2">
+    <div><label>First name</label><input id="lmFirst"></div>
+    <div><label>Last name</label><input id="lmLast"></div>
+  </div>
+  <div class="fld row2">
+    <div><label>Email</label><input id="lmEmail" type="email"></div>
+    <div><label>Phone</label><input id="lmPhone"></div>
+  </div>
+  <div class="fld"><label>Company / team</label><input id="lmCompany"></div>
+  <div class="fld row2">
+    <div><label>Intent</label><select id="lmIntent"><option value="book">book</option><option value="prelaunch">prelaunch</option><option value="inquiry">inquiry</option></select></div>
+    <div><label>Status</label><select id="lmStatus"><option>new</option><option>contacted</option><option>qualified</option><option>nurturing</option><option>won</option><option>lost</option></select></div>
+  </div>
+  <div class="fld"><label>Likely-to-purchase rating: <b id="lmRateVal">0</b>/100</label><input id="lmRating" type="range" min="0" max="100" step="5" value="0"></div>
+  <div class="fld"><label>Notes</label><textarea id="lmNotes"></textarea></div>
+  <div id="leadModalMsg"></div>
+  <div class="modal-act"><button class="btn-sm" id="lmCancel">Cancel</button><button class="btn-sm dark" id="lmSave">Save</button></div>
+</div></div>
+
+<!-- POST MODAL -->
+<div class="modal" id="postModal"><div class="box">
+  <h3 id="postModalTitle">New post</h3>
+  <input type="hidden" id="pmId">
+  <div class="fld"><label>Title</label><input id="pmTitle"></div>
+  <div class="fld row2">
+    <div><label>Category</label><select id="pmCat"><option>AI Systems</option><option>Broker Systems</option><option>Social Media</option></select></div>
+    <div><label>Status</label><select id="pmStatus"><option>draft</option><option>published</option></select></div>
+  </div>
+  <div class="fld"><label>Excerpt</label><textarea id="pmExcerpt" style="min-height:70px"></textarea></div>
+  <div class="fld"><label>Body</label><textarea id="pmBody"></textarea></div>
+  <div id="postModalMsg"></div>
+  <div class="modal-act"><button class="btn-sm" id="pmCancel">Cancel</button><button class="btn-sm danger" id="pmDelete" style="margin-right:auto;display:none">Delete</button><button class="btn-sm dark" id="pmSave">Save</button></div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPA_URL='https://tdivoeaffojenockwxbp.supabase.co';
+const SUPA_KEY='sb_publishable_EoWSOlCov5Cyocv84Ojb9Q_LLWiwNhH';
+const sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+const $ = id => document.getElementById(id);
+function msg(el,kind,text){ el.innerHTML = text ? '<div class="msg '+kind+'">'+text+'</div>' : ''; }
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function ago(t){ if(!t) return '—'; var d=(Date.now()-new Date(t).getTime())/1000; if(d<60)return'just now'; if(d<3600)return Math.floor(d/60)+'m ago'; if(d<86400)return Math.floor(d/3600)+'h ago'; return Math.floor(d/86400)+'d ago'; }
+
+// ---------- auth ----------
+async function boot(){
+  const { data:{ session } } = await sb.auth.getSession();
+  if(session){ await afterLogin(session); } else { $('login').style.display='block'; }
+}
+$('sendLink').addEventListener('click', async ()=>{
+  const email=$('email').value.trim(); if(!email){ msg($('loginMsg'),'err','Enter your email.'); return; }
+  $('sendLink').disabled=true; $('sendLink').textContent='Sending…';
+  const { error } = await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo: location.origin+location.pathname } });
+  $('sendLink').disabled=false; $('sendLink').textContent='Send magic link';
+  if(error) msg($('loginMsg'),'err',error.message);
+  else msg($('loginMsg'),'ok','Check your inbox — click the link to sign in. You can close this tab.');
+});
+$('logout').addEventListener('click', async ()=>{ await sb.auth.signOut(); location.reload(); });
+
+async function afterLogin(session){
+  // check staff role
+  const { data:prof } = await sb.from('profiles').select('role,email,full_name').eq('id',session.user.id).single();
+  if(!prof || !(prof.role==='admin'||prof.role==='agent')){
+    $('login').style.display='block';
+    msg($('loginMsg'),'err','This account isn’t authorized for admin. ('+session.user.email+')');
+    await sb.auth.signOut(); return;
+  }
+  $('login').style.display='none';
+  $('dash').style.display='block';
+  $('who').style.display='flex';
+  $('whoEmail').textContent=prof.email||session.user.email;
+  loadLeads(); loadActivity(); loadBlog();
+}
+sb.auth.onAuthStateChange((_e,session)=>{ if(session && $('dash').style.display==='none'){ afterLogin(session); } });
+
+// ---------- tabs ----------
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  $('panel-'+b.dataset.tab).classList.add('on');
+}));
+
+// ---------- leads ----------
+async function loadLeads(){
+  const { data, error } = await sb.from('leads').select('*').order('created_at',{ascending:false}).limit(500);
+  const body=$('leadsBody');
+  if(error){ body.innerHTML='<tr><td colspan="7" class="empty">'+esc(error.message)+'</td></tr>'; return; }
+  if(!data.length){ body.innerHTML='<tr><td colspan="7" class="empty">No leads yet.</td></tr>'; return; }
+  body.innerHTML=data.map(l=>{
+    const name=esc(((l.first_name||'')+' '+(l.last_name||'')).trim()||'—');
+    const intent=esc(l.intent||'—'); const cls=(l.intent==='book'?'book':l.intent==='prelaunch'?'prelaunch':'new');
+    return '<tr>'+
+      '<td><b>'+name+'</b><div class="mini">'+ago(l.created_at)+'</div></td>'+
+      '<td>'+esc(l.email||'')+'<div class="mini">'+esc(l.phone||'')+'</div></td>'+
+      '<td><span class="pill '+cls+'">'+intent+'</span></td>'+
+      '<td class="mini">'+esc(l.source_page||'')+'</td>'+
+      '<td><span class="rate"><span class="barp"><i style="width:'+(l.rating||0)+'%"></i></span>'+(l.rating||0)+'</span></td>'+
+      '<td><span class="pill new">'+esc(l.status||'new')+'</span></td>'+
+      '<td><div class="row-act"><button class="btn-sm" data-edit=\''+esc(JSON.stringify(l))+'\'>Edit</button></div></td>'+
+    '</tr>';
+  }).join('');
+  body.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>openLead(JSON.parse(b.getAttribute('data-edit')))));
+}
+function openLead(l){
+  l=l||{}; $('leadModalTitle').textContent=l.id?'Edit lead':'New lead';
+  $('lmId').value=l.id||''; $('lmFirst').value=l.first_name||''; $('lmLast').value=l.last_name||'';
+  $('lmEmail').value=l.email||''; $('lmPhone').value=l.phone||''; $('lmCompany').value=l.company||'';
+  $('lmIntent').value=l.intent||'inquiry'; $('lmStatus').value=l.status||'new';
+  $('lmRating').value=l.rating||0; $('lmRateVal').textContent=l.rating||0; $('lmNotes').value=l.notes||'';
+  msg($('leadModalMsg'),'',''); $('leadModal').classList.add('on');
+}
+$('lmRating').addEventListener('input',e=>$('lmRateVal').textContent=e.target.value);
+$('newLead').addEventListener('click',()=>openLead({}));
+$('lmCancel').addEventListener('click',()=>$('leadModal').classList.remove('on'));
+$('lmSave').addEventListener('click', async ()=>{
+  const row={ first_name:$('lmFirst').value.trim(), last_name:$('lmLast').value.trim(), email:$('lmEmail').value.trim(),
+    phone:$('lmPhone').value.trim(), company:$('lmCompany').value.trim(), intent:$('lmIntent').value,
+    status:$('lmStatus').value, rating:parseInt($('lmRating').value,10), notes:$('lmNotes').value.trim() };
+  const id=$('lmId').value;
+  let res; if(id){ res=await sb.from('leads').update(row).eq('id',id); } else { row.source_page='admin'; res=await sb.from('leads').insert(row); }
+  if(res.error){ msg($('leadModalMsg'),'err',res.error.message); return; }
+  $('leadModal').classList.remove('on'); loadLeads();
+});
+
+// ---------- activity / heat ----------
+async function loadActivity(){
+  const since=new Date(Date.now()-7*864e5).toISOString();
+  const { data, error } = await sb.from('page_events').select('session_id,path,dwell_seconds,created_at').gte('created_at',since).order('created_at',{ascending:false}).limit(3000);
+  const body=$('actBody');
+  if(error){ body.innerHTML='<tr><td colspan="5" class="empty">'+esc(error.message)+'</td></tr>'; return; }
+  if(!data.length){ body.innerHTML='<tr><td colspan="5" class="empty">No visitor activity yet.</td></tr>'; return; }
+  const byS={};
+  data.forEach(e=>{
+    const k=e.session_id||'?';
+    const s=byS[k]||(byS[k]={dwell:0,views:0,pages:{},last:e.created_at});
+    if((e.dwell_seconds||0)>s.dwell) s.dwell=e.dwell_seconds;              // max cumulative dwell in session
+    s.views++;
+    s.pages[e.path]=Math.max(s.pages[e.path]||0, e.dwell_seconds||0);      // deepest dwell per page
+    if(e.created_at>s.last) s.last=e.created_at;
+  });
+  const rows=Object.keys(byS).map(k=>{ const s=byS[k]; const top=Object.keys(s.pages).sort((a,b)=>s.pages[b]-s.pages[a])[0]; return {k,top,dwell:s.dwell,views:s.views,last:s.last}; }).sort((a,b)=>b.dwell-a.dwell).slice(0,100);
+  body.innerHTML=rows.map(r=>{ const m=Math.floor(r.dwell/60), sc=r.dwell%60; const hot=r.dwell>=90;
+    return '<tr><td class="mini">'+esc(r.k.slice(0,14))+(hot?' <span class="pill book">HOT</span>':'')+'</td><td>'+esc(r.top||'')+'</td><td><b>'+(m?m+'m ':'')+sc+'s</b></td><td>'+r.views+'</td><td class="mini">'+ago(r.last)+'</td></tr>';
+  }).join('');
+}
+
+// ---------- blog ----------
+async function loadBlog(){
+  const { data, error } = await sb.from('blog_posts').select('*').order('created_at',{ascending:false});
+  const body=$('blogBody');
+  if(error){ body.innerHTML='<tr><td colspan="5" class="empty">'+esc(error.message)+'</td></tr>'; return; }
+  if(!data.length){ body.innerHTML='<tr><td colspan="5" class="empty">No posts yet. The weekly auto-writer will add them, or create one.</td></tr>'; return; }
+  body.innerHTML=data.map(p=>'<tr>'+
+    '<td><b>'+esc(p.title)+'</b></td><td class="mini">'+esc(p.category)+'</td>'+
+    '<td><span class="pill '+(p.status==='published'?'book':'prelaunch')+'">'+esc(p.status)+'</span></td>'+
+    '<td class="mini">'+(p.published_at?ago(p.published_at):'—')+'</td>'+
+    '<td><button class="btn-sm" data-post=\''+esc(JSON.stringify(p))+'\'>Edit</button></td></tr>').join('');
+  body.querySelectorAll('[data-post]').forEach(b=>b.addEventListener('click',()=>openPost(JSON.parse(b.getAttribute('data-post')))));
+}
+function slugify(s){ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,80); }
+function openPost(p){
+  p=p||{}; $('postModalTitle').textContent=p.id?'Edit post':'New post';
+  $('pmId').value=p.id||''; $('pmTitle').value=p.title||''; $('pmCat').value=p.category||'AI Systems';
+  $('pmStatus').value=p.status||'draft'; $('pmExcerpt').value=p.excerpt||''; $('pmBody').value=p.body||'';
+  $('pmDelete').style.display=p.id?'inline-block':'none';
+  msg($('postModalMsg'),'',''); $('postModal').classList.add('on');
+}
+$('newPost').addEventListener('click',()=>openPost({}));
+$('pmCancel').addEventListener('click',()=>$('postModal').classList.remove('on'));
+$('pmSave').addEventListener('click', async ()=>{
+  const title=$('pmTitle').value.trim(); if(!title){ msg($('postModalMsg'),'err','Title required.'); return; }
+  const status=$('pmStatus').value;
+  const row={ title, category:$('pmCat').value, status, excerpt:$('pmExcerpt').value.trim(), body:$('pmBody').value.trim() };
+  const id=$('pmId').value;
+  if(!id){ row.slug=slugify(title)+'-'+Math.random().toString(36).slice(2,6); }
+  if(status==='published'){ row.published_at=new Date().toISOString(); }
+  let res; if(id){ res=await sb.from('blog_posts').update(row).eq('id',id); } else { res=await sb.from('blog_posts').insert(row); }
+  if(res.error){ msg($('postModalMsg'),'err',res.error.message); return; }
+  $('postModal').classList.remove('on'); loadBlog();
+});
+$('pmDelete').addEventListener('click', async ()=>{
+  const id=$('pmId').value; if(!id) return; if(!confirm('Delete this post?')) return;
+  const res=await sb.from('blog_posts').delete().eq('id',id);
+  if(res.error){ msg($('postModalMsg'),'err',res.error.message); return; }
+  $('postModal').classList.remove('on'); loadBlog();
+});
+
+boot();
+</script>
+</body>
+</html>
