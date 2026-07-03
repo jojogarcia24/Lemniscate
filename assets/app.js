@@ -283,3 +283,55 @@
     })
     .catch(function(){ if(stateEl) stateEl.textContent='We couldn’t load this post — please refresh in a moment.'; });
 })();
+
+// ---- PWA: service worker + "Install app" prompt ----
+(function(){
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('/sw.js').catch(function(){}); });
+  }
+  var standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+  if(standalone) return;                                   // already installed — nothing to prompt
+  if(document.body && document.body.hasAttribute('data-lm-noinstall')) return;
+
+  var ua = navigator.userAgent || '';
+  var isIOS = /iphone|ipad|ipod/i.test(ua) && !window.MSStream;
+  var deferred = null;
+  var KEY='lm_pwa_dismiss';
+  function dismissed(){ try{ return localStorage.getItem(KEY)==='1'; }catch(e){ return false; } }
+  function remember(){ try{ localStorage.setItem(KEY,'1'); }catch(e){} }
+
+  function banner(){
+    var ex=document.getElementById('lmInstall'); if(ex) return ex;
+    var d=document.createElement('div'); d.id='lmInstall'; d.className='lm-install';
+    d.innerHTML='<img src="/assets/icons/icon-192.png" alt="Lemniscate app icon">'+
+      '<div class="lm-install-txt"><b>Install the Lemniscate app</b><span>One-tap access from your home screen.</span></div>'+
+      '<button class="lm-install-btn" id="lmInstallBtn" type="button">Install</button>'+
+      '<button class="lm-install-x" id="lmInstallX" type="button" aria-label="Dismiss">&times;</button>';
+    document.body.appendChild(d);
+    d.querySelector('#lmInstallX').addEventListener('click', function(){ d.classList.remove('show'); remember(); });
+    d.querySelector('#lmInstallBtn').addEventListener('click', install);
+    return d;
+  }
+  function show(){ if(dismissed()) return; var d=banner(); setTimeout(function(){ d.classList.add('show'); }, 1200); }
+
+  function install(){
+    if(deferred){
+      deferred.prompt();
+      deferred.userChoice.then(function(){ deferred=null; var d=document.getElementById('lmInstall'); if(d) d.classList.remove('show'); });
+    } else if(isIOS){ iosHelp(); }
+  }
+  function iosHelp(){
+    var m=document.createElement('div'); m.className='lm-ios-help';
+    m.innerHTML='<div class="lm-ios-card"><button class="lm-install-x" id="lmIosX" type="button" aria-label="Close">&times;</button>'+
+      '<img src="/assets/icons/icon-192.png" alt="Lemniscate app icon">'+
+      '<h4>Add Lemniscate to your Home Screen</h4>'+
+      '<p>Tap the <b>Share</b> icon <span class="lm-share">&#x2191;</span> at the bottom of Safari, then choose <b>“Add to Home Screen.”</b></p></div>';
+    document.body.appendChild(m);
+    requestAnimationFrame(function(){ m.classList.add('show'); });
+    m.addEventListener('click', function(e){ if(e.target===m || e.target.id==='lmIosX'){ m.classList.remove('show'); setTimeout(function(){ m.remove(); },260); } });
+  }
+
+  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferred=e; show(); });
+  window.addEventListener('appinstalled', function(){ var d=document.getElementById('lmInstall'); if(d) d.classList.remove('show'); remember(); });
+  if(isIOS) show();                                        // iOS never fires beforeinstallprompt
+})();
