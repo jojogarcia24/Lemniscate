@@ -64,7 +64,7 @@
 
 <div class="admin-top"><div class="wrap">
   <span class="logo"><span class="mark">∞</span> Lemniscate <span style="font-weight:500;color:rgba(255,255,255,.5)">Admin</span></span>
-  <span class="who" id="who" style="display:none"><span id="whoEmail"></span><a id="logout">Sign out</a></span>
+  <span class="who" id="who" style="display:none"><button id="pushBtn" class="btn-sm" style="margin-right:12px">🔔 Enable alerts</button><span id="whoEmail"></span><a id="logout">Sign out</a></span>
 </div></div>
 
 <!-- LOGIN -->
@@ -189,8 +189,47 @@ async function afterLogin(session){
   $('who').style.display='flex';
   $('whoEmail').textContent=prof.email||session.user.email;
   loadLeads(); loadActivity(); loadBlog();
+  initPush(session);
 }
 sb.auth.onAuthStateChange((_e,session)=>{ if(session && $('dash').style.display==='none'){ afterLogin(session); } });
+
+// ---------- web push (hot-lead alerts) ----------
+const VAPID_PUBLIC_KEY='BEuY81t580IVSs_fXHckU-OZLSh_9y9hWf5DdyAEHXqFTjy_gqSXgaXhbEx5aEHcYmvazNGBkz46hqBE0PRnPHE';
+function urlB64ToUint8Array(b64){
+  const pad='='.repeat((4-b64.length%4)%4);
+  const base=(b64+pad).replace(/-/g,'+').replace(/_/g,'/');
+  const raw=atob(base); const out=new Uint8Array(raw.length);
+  for(let i=0;i<raw.length;i++) out[i]=raw.charCodeAt(i);
+  return out;
+}
+async function initPush(session){
+  const btn=$('pushBtn');
+  if(!('serviceWorker' in navigator) || !('PushManager' in window)){ btn.style.display='none'; return; }
+  btn.style.display='';
+  let reg;
+  try{ reg=await navigator.serviceWorker.register('sw.js'); }
+  catch(e){ btn.style.display='none'; return; }
+  async function refresh(){
+    const sub=await reg.pushManager.getSubscription();
+    if(sub){ btn.textContent='🔔 Alerts on'; btn.disabled=true; btn.style.opacity=.7; }
+    else { btn.textContent='🔔 Enable alerts'; btn.disabled=false; btn.style.opacity=1; }
+  }
+  await refresh();
+  btn.onclick=async ()=>{
+    btn.disabled=true; btn.textContent='Enabling…';
+    try{
+      const perm=await Notification.requestPermission();
+      if(perm!=='granted'){ btn.disabled=false; btn.textContent='🔔 Enable alerts'; alert('Notifications were blocked. Enable them in your browser settings to get hot-lead alerts.'); return; }
+      const sub=await reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey:urlB64ToUint8Array(VAPID_PUBLIC_KEY) });
+      const j=sub.toJSON();
+      const { error }=await sb.from('push_subscriptions').upsert({
+        user_id:session.user.id, endpoint:sub.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth
+      },{ onConflict:'endpoint' });
+      if(error) throw error;
+      await refresh();
+    }catch(e){ btn.disabled=false; btn.textContent='🔔 Enable alerts'; alert('Could not enable alerts: '+(e.message||e)); }
+  };
+}
 
 // ---------- tabs ----------
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
