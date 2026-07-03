@@ -175,3 +175,37 @@
   if(reset) reset.addEventListener('click',resetTerm);
   load('lead-triage');
 })();
+
+// ---- Pre-market signup (footer) → marketing-inquire ----
+(function(){
+  var form=document.getElementById('preForm'); if(!form) return;
+  var ENDPOINT = (location.hostname.indexOf('elitelivingrealty') !== -1 || location.protocol === 'file:')
+    ? '/.netlify/functions/marketing-inquire'
+    : 'https://www.elitelivingrealty.com/.netlify/functions/marketing-inquire';
+  var msg=document.getElementById('preMsg'), btn=document.getElementById('pSubmit');
+  function show(kind,text){ msg.className='pl-msg '+kind; msg.textContent=text; }
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var name=document.getElementById('pName').value.trim();
+    var email=document.getElementById('pEmail').value.trim();
+    var phone=document.getElementById('pPhone').value.trim();
+    if(!name || !email){ show('err','Please add your name and email to join the list.'); return; }
+    var parts=name.split(/\s+/); var first=parts.shift()||name; var last=parts.join(' ');
+    btn.disabled=true; btn.textContent='Joining…';
+    try{
+      var res=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          first_name:first, last_name:last, email:email, phone:phone,
+          package:'Lemniscate Marketing Systems', intent:'prelaunch',
+          message:'Pre-market list signup', page_url:location.href
+        })});
+      var j=await res.json().catch(function(){return {};});
+      if(!res.ok || j.ok===false) throw new Error((j&&j.error)||('Error '+res.status));
+      form.reset(); show('ok','You’re on the list — we’ll be in touch with early access. 🎉');
+      btn.disabled=false; btn.textContent='Join the list';
+    }catch(err){
+      btn.disabled=false; btn.textContent='Join the list';
+      show('err','Something went wrong — please try again, or email hello@lemniscatemarketingsystems.com.');
+    }
+  });
+})();
