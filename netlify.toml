@@ -2,5 +2,9 @@
 # No serverless functions needed here: the Book-a-Call form posts cross-origin
 # to Elite Living Realty's /.netlify/functions/marketing-inquire (CORS is open),
 # so requests land in the shared marketing-leads dashboard + GHL.
+# `publish = "."` served the repository itself, including the database migrations
+# and internal notes. The build script is an explicit allow-list of what this
+# site serves; see scripts/netlify-build.sh.
 [build]
-  publish = "."
+  publish = "dist"
+  command = "bash scripts/netlify-build.sh dist"
